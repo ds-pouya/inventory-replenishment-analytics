@@ -1,0 +1,18 @@
+{
+  "metric": "pooled_mae",
+  "tie_breaker": "model_name_ascending",
+  "selected_model": "calendar_ridge",
+  "validation_mae": {
+    "calendar_ridge": 6.100887419082915,
+    "mean_28": 6.3794132653061215,
+    "seasonal_naive_7": 6.86625
+  },
+  "validation_end_day": 1913,
+  "fingerprints": {
+    "config/forecasting.toml": "7498dd1c0e9ad889628518372e76b5b3ef16a817d7509a9e2e47e8bc85beb9b9",
+    "data/processed/build_config.json": "857d70f7264ee834e2685ea4491649f720ba3816a49b053c6fe9d6f83a088286",
+    "data/processed/daily_sales.parquet": "72feb24f36c0a089009fcfd23c725c7c66de035ab5992456fb4dca5d6ba772ad",
+    "data/raw/m5/calendar.csv": "d12b5914ef03e66649adf5dd9e996e6602251c22b7a6af8f1f7e3aa12f8860f5",
+    "forecasting_code": "326cb765da63f5134fd086baaf8d0d669a40ec43edfee84479a305c83eea98d0"
+  }
+}

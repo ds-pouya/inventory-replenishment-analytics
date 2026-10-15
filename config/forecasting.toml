@@ -1,0 +1,10 @@
+# Candidate definitions fixed before final evaluation.
+[selection]
+metric = "pooled_mae"
+tie_breaker = "model_name_ascending"
+candidates = ["seasonal_naive_7", "mean_28", "calendar_ridge"]
+
+[calendar_ridge]
+training_days = 364
+ridge_alpha = 10.0
+features = ["weekday", "annual_sin", "annual_cos", "trend", "snap", "event"]
