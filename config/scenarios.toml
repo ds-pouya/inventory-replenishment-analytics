@@ -1,8 +1,6 @@
-# Hypothetical inputs, not supplier or inventory observations.
-# These defaults are for future implementation; no simulation runs yet.
+# Deterministic replay scenarios; inventory and supplier inputs are hypothetical.
 [scenario]
 name = "illustrative_base_case"
-seed = 42
 lead_time_days = 7
 review_period_days = 7
 initial_stock_cover_days = 14
@@ -10,6 +8,10 @@ service_target = 0.95
 unmet_demand_behavior = "lost_sales"
 monetary_costs_enabled = false
 
-# Initial stock will be estimated from training history. Within-day receipt,
-# demand, review and order timing will be defined with the simulation model.
-# The service target is a policy input; achieved fill rate is a measured output.
+[sensitivity]
+lead_time_days = [3, 7, 14]
+initial_stock_cover_days = [7, 14, 28]
+
+# Reviews occur at the start of day 1 and every review_period_days thereafter.
+# Receipts arrive before review and demand; an order on day t arrives on t + L.
+# The service target sizes an approximate safety buffer; it is not a fill-rate guarantee.
