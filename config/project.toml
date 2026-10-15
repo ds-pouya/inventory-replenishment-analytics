@@ -1,0 +1,25 @@
+# Configuration consumed by scripts/build_data.py.
+[project]
+name = "inventory-replenishment-analytics"
+status = "implementation"
+
+[data]
+source = "m5-forecasting-accuracy"
+raw_directory = "data/raw/m5"
+sales_file = "sales_train_evaluation.csv"
+calendar_file = "calendar.csv"
+prices_file = "sell_prices.csv"
+
+[subset]
+store_id = "CA_1"
+dept_id = "FOODS_3"
+max_items = 50
+selection_end_day = 1801
+selection_rule = "descending training units; item_id breaks ties"
+
+[evaluation]
+initial_train_end_day = 1801
+validation_windows = 4
+horizon_days = 28
+final_holdout_start_day = 1914
+final_holdout_end_day = 1941

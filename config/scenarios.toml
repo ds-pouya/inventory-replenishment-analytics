@@ -1,0 +1,15 @@
+# Hypothetical inputs, not supplier or inventory observations.
+# These defaults are for future implementation; no simulation runs yet.
+[scenario]
+name = "illustrative_base_case"
+seed = 42
+lead_time_days = 7
+review_period_days = 7
+initial_stock_cover_days = 14
+service_target = 0.95
+unmet_demand_behavior = "lost_sales"
+monetary_costs_enabled = false
+
+# Estimate initial units using training history only. The implementation must
+# specify within-day ordering of receipts, demand, review and order placement.
+# A service target is a policy input, not a guaranteed achieved fill rate.
