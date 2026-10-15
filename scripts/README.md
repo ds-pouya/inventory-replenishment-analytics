@@ -1,1 +1,1 @@
-Run download_data.py, build_data.py, backtest.py, then evaluate.py. Final evaluation requires the tracked selection fingerprints. See docs/SETUP.md and docs/FORECASTING.md.
+Run download_data.py, build_data.py, backtest.py, evaluate.py, then simulate.py. Evaluation and simulation verify frozen forecasting inputs. See docs/SETUP.md, docs/FORECASTING.md, and docs/SIMULATION.md.

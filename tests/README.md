@@ -1,1 +1,1 @@
-Synthetic fixtures cover source keys, sales/price/calendar joins, training-only selection, forecast isolation, weekday learning, undefined WAPE, zero-run boundaries, and frozen evaluation inputs.
+Synthetic fixtures cover source validation, forecast isolation and frozen evaluation, inventory receipt/review timing, orders in transit, lost sales, zero demand, rounding, cohort metrics, invalid inputs, and decision timing.

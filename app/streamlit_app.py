@@ -1,4 +1,4 @@
-"""Read-only demand diagnostics; no simulated inventory outcomes yet."""
+"""Demand diagnostics, forecast evaluation, and inventory-policy replay."""
 from pathlib import Path
 import json
 import duckdb
@@ -7,8 +7,8 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 st.set_page_config(page_title="Inventory | Demand diagnostics", layout="wide")
 st.title("Inventory planning")
-st.caption("M5 retail case study · Demand and forecast evaluation · Milestone 3")
-st.info("Observed sales are fulfilled units, not unconstrained demand. Inventory and supplier data are unavailable; replenishment simulation is a later milestone.")
+st.caption("M5 retail case study · Demand, forecasts, and inventory scenarios · Milestone 4")
+st.info("Observed sales are fulfilled units, not unconstrained demand. Inventory outcomes below are simulated using hypothetical stock and supplier assumptions.")
 mart = ROOT / "data/processed/daily_sales.parquet"
 if not mart.exists():
     st.warning("No data mart yet. Run python scripts/download_data.py, then python scripts/build_data.py.")
@@ -93,3 +93,40 @@ if zero_path.exists():
         zero = zero[zero.item_id.isin(items)].sort_values("longest_zero_run_days", ascending=False)
         st.dataframe(zero, width="stretch", hide_index=True)
         st.caption("Long zero-sales runs may reflect several causes, including changes in assortment or demand. These data do not establish stockouts.")
+
+simulation_path = mart.parent / "simulation_summary.json"
+if simulation_path.exists():
+    st.header("Inventory policy replay")
+    st.caption("Retrospective 28-day sales replay with hypothetical inventory inputs. Sales are a demand proxy; these are not actual stockout or cost-saving estimates.")
+    simulation = json.loads(simulation_path.read_text())
+    scenario_ids = sorted({row["scenario_id"] for row in simulation["results"]})
+    base_id = next(row["scenario_id"] for row in simulation["results"] if row["is_base_case"])
+    def scenario_label(value):
+        lead, review, cover = value.split("_")
+        return f"Lead {lead[1:]} days · Review {review[1:]} days · Initial cover {cover[1:]} days"
+    scenario_id = st.selectbox("Inventory scenario", scenario_ids, index=scenario_ids.index(base_id), format_func=scenario_label)
+    daily_path = mart.parent / "simulation_daily.parquet"
+    replay = load(str(daily_path), daily_path.stat().st_mtime_ns)
+    replay = replay[(replay.scenario_id == scenario_id) & replay.item_id.isin(items)]
+    import sys
+    sys.path.insert(0, str(ROOT / "src"))
+    from inventory_analytics.simulation import aggregate
+    import pandas as pd
+    policy_names = {"fixed_cover": "Fixed-cover baseline", "order_up_to": "Order-up-to"}
+    comparison_rows = []
+    for policy, group in replay.groupby("policy"):
+        result = aggregate(group)
+        comparison_rows.append({"Policy": policy_names[policy],
+            "Fill rate (%)": 100 * result["unit_fill_rate"] if result["unit_fill_rate"] is not None else None,
+            "Mean closing stock (units)": result["average_ending_inventory"],
+            "Unmet units": result["lost_units"], "Orders": result["order_count"],
+            "Final on-hand": result["ending_stock"], "Final on-order": result["ending_on_order"]})
+    st.dataframe(pd.DataFrame(comparison_rows).round(2), width="stretch", hide_index=True)
+    stock = replay.groupby(["date", "policy"]).ending_stock.sum().unstack("policy")
+    st.line_chart(stock.rename(columns=policy_names))
+    st.caption("Closing stock is summed across the selected products. The order-up-to bundle combines forecast targets, an approximate safety buffer, and inventory-position control.")
+    with st.expander("Simulation assumptions and accounting"):
+        st.write(simulation["scenario_config"])
+        st.write(simulation["checks"])
+        st.write("Receipts arrive before opening reviews and daily demand. Initial pipeline is empty. Unmet units are lost, and orders due after day 28 remain in final on-order stock.")
+        st.write("The nominal 95% buffer parameter does not guarantee a 95% fill rate. Forecasts stay fixed at the replay's start. No warm-up or monetary objective is included.")

@@ -8,9 +8,12 @@
   - [x] Compare two baselines and a calendar-aware regression on validation windows.
   - [x] Commit the selection record before final scoring; report holdout outcomes.
   - [x] Diagnose training-period zero-sales runs.
-- [ ] M4: implement baseline and order-up-to simulations with flow checks.
+- [x] M4: implement baseline and order-up-to simulations with flow checks.
+  - [x] Compare nine lead-time/initial-stock scenarios and verify deterministic reruns.
 - [ ] M5: complete the decision dashboard including replenishment simulation.
   - [x] Run demand overview and forecast diagnostics; check default, empty and single-product filters.
+  - [x] Integrate simulation scenario comparison and product filtering.
+  - [ ] Finish decision summaries, presentation layout, and visual review.
 - [ ] M6: publish findings, screenshots, and a technical walkthrough.
 - [ ] M7: add Power BI/PBIR/model and RDL only with target-runtime validation.
 

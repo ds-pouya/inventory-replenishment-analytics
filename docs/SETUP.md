@@ -11,6 +11,7 @@ python3 -m venv .venv
 .venv/bin/python scripts/build_data.py
 .venv/bin/python scripts/backtest.py
 .venv/bin/python scripts/evaluate.py
+.venv/bin/python scripts/simulate.py
 .venv/bin/python -m unittest discover -s tests -v
 .venv/bin/python -m streamlit run app/streamlit_app.py
 ```
@@ -50,3 +51,17 @@ Additional forecasting outputs include `forecast_selection.json`,
 `zero_sales_diagnostics.json`, `final_forecasts.parquet`, and `final_metrics.json`
 in `data/processed/`. The tracked selection record lives in
 `docs/FORECAST_SELECTION.json`; aggregate findings are in `docs/FORECAST_RESULTS.md`.
+
+## Inventory replay outputs
+
+`simulate.py` reads `config/scenarios.toml`, the frozen forecast selection, the
+sales mart, the source calendar, and pre-replay validation errors. It writes:
+
+- `simulation_daily.parquet`: the per-product, per-policy daily accounting ledger.
+- `simulation_products.parquet`: product metrics for each policy and scenario.
+- `simulation_assumptions.parquet`: initial stock, historical means, and buffers.
+- `simulation_summary.json`: aggregate metrics, configuration, and input/code hashes.
+
+These outputs remain under ignored `data/processed/`. The dashboard's scenario
+selector compares the precomputed grid; changing the configuration requires
+rerunning `simulate.py`. No live policy optimization is performed.

@@ -8,7 +8,8 @@ M5 CSV files and source metadata
     -> DuckDB validation and SQL transformations
     -> daily_sales.parquet and a quality profile
     -> rolling-origin candidate forecasts and frozen final evaluation
-    -> Streamlit demand and forecast diagnostics
+    -> deterministic inventory-policy simulation
+    -> Streamlit demand, forecast, and scenario diagnostics
 ```
 
 ## Technology choices
@@ -56,16 +57,18 @@ MAE measures absolute unit error per item-day. Aggregate WAPE divides total
 absolute error by total observed units; a zero denominator produces a null score.
 These metrics evaluate the selected series, rather than the complete M5 hierarchy.
 
-## Inventory simulation design
+## Inventory simulation
 
-The next stage will compare replenishment policies using scenario-specific lead
-times, initial stock, and service targets. Held-out sales will act as a demand
-proxy because the source contains no inventory balances or unmet-demand records.
+`simulation.py` replays fixed-cover and order-up-to policies across a lead-time
+and starting-stock grid. Historical sales serve as requested units because the
+source contains no actual inventory balances or unmet-demand records. The replay
+uses the previously evaluated forecast period and is retrospective.
 
-The simulation will track receipts, fulfilled units, unmet units, orders, and ending
-stock. Its accounting identity is opening stock + receipts - fulfilled units =
-ending stock. Event timing and lost-sales behavior will be defined before policy
-comparisons. Monetary comparisons depend on documented cost assumptions.
+Each ledger tracks receipts, orders, requested/fulfilled/lost units, closing stock,
+and outstanding orders. Receipts precede opening reviews and daily demand. Orders
+arrive on the order day plus lead time. Daily and cumulative stock/pipeline balances
+are enforced. Forecasts stay fixed at day 1913, and safety buffers use earlier
+validation errors. Monetary comparisons are outside the current model.
 
 ## Reporting extensions
 

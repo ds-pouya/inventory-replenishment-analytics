@@ -3,9 +3,9 @@
 ## Why this case study?
 
 It joins industrial engineering inventory decisions with data modeling and
-forecast evaluation. The immediate question is which active product-store
-series deserve planning attention. Replenishment recommendations come later,
-after forecasts and inventory assumptions have been validated.
+forecast evaluation. It examines which active product-store series deserve
+planning attention and how replenishment policies trade simulated service against
+inventory under documented assumptions.
 
 ## Why three input tables?
 
@@ -56,3 +56,15 @@ recent average performed better on the final holdout. The selection remains
 unchanged, preserving an honest estimate of that decision's performance. Neither
 result alone determines the best inventory policy: service and inventory outcomes
 also depend on lead times, uncertainty, and replenishment rules.
+
+## How do the inventory policies differ?
+
+Fixed cover orders one review period of pre-start average sales every seven days,
+regardless of available stock. Order-up-to subtracts on-hand and incoming stock
+from a forecast target plus a safety buffer. Subtracting incoming orders prevents
+reordering stock already in transit. Receipts arrive before review and demand.
+
+The base case uses less inventory under order-up-to but has more unmet units.
+That is a tradeoff requiring a service/cost objective, not evidence of savings.
+The normal-quantile buffer uses approximate independent-error assumptions, so its
+nominal 95% parameter does not guarantee a 95% simulated unit fill rate.
