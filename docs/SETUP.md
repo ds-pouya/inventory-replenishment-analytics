@@ -10,6 +10,7 @@ python3 -m venv .venv
 .venv/bin/python scripts/download_data.py
 .venv/bin/python scripts/build_data.py
 .venv/bin/python scripts/backtest.py
+.venv/bin/python scripts/evaluate.py
 .venv/bin/python -m unittest discover -s tests -v
 .venv/bin/python -m streamlit run app/streamlit_app.py
 ```
@@ -28,8 +29,11 @@ Outputs are reproducible for identical source bytes and configuration; timestamp
 will differ. Missing prices are allowed only on zero-sales rows and counted in
 the profile. No unpriced positive sales silently enter reported sales value.
 
-The application is read-only. It displays the training interval, not the final
-holdout, and reads local generated Parquet. It is not yet deployed publicly.
+The demand overview displays the training interval. Forecast diagnostics offer
+validation and final-holdout views. The application reads local Parquet and is
+not yet deployed publicly. Final evaluation requires the committed selection
+fingerprints; a regenerated mart with different bytes will fail that check.
+See `docs/FORECASTING.md` for the evaluation lifecycle.
 
 ## Output files
 
@@ -41,3 +45,8 @@ holdout, and reads local generated Parquet. It is not yet deployed publicly.
 
 These generated files are ignored by Git. Published results contain aggregate
 findings; the source records remain local.
+
+Additional forecasting outputs include `forecast_selection.json`,
+`zero_sales_diagnostics.json`, `final_forecasts.parquet`, and `final_metrics.json`
+in `data/processed/`. The tracked selection record lives in
+`docs/FORECAST_SELECTION.json`; aggregate findings are in `docs/FORECAST_RESULTS.md`.

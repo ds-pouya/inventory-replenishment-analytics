@@ -11,7 +11,7 @@ best for a stated subset and assumptions, including uncertainty and tradeoffs.
 - Historical sales diagnostics by item, store, category and day.
 - Product segmentation by observed sales value and variability.
 - Seasonal-naive baseline, then one justified forecasting improvement.
-- Rolling-origin evaluation and a final untouched 28-day evaluation period.
+- Rolling-origin evaluation and a final 28-day period scored after model selection.
 - Periodic-review order-up-to policy against a simple fixed-cover baseline.
 - Simulated service and inventory outcomes; optional cost comparison only when
   unit-cost, holding-cost and unmet-unit penalty assumptions are documented.

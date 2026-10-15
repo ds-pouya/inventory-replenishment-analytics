@@ -4,8 +4,10 @@
 - [x] Create a local project structure and initial design documentation.
 - [x] M1: verify acquisition/terms, fingerprint inputs, profile schemas and coverage.
 - [x] M2: build reproducible sales/price/calendar marts and reconcile joins/totals.
-- [ ] M3: complete forecasting candidate comparison and frozen final evaluation.
-  - [x] Freeze subset and compare seasonal-naive / recent-mean baselines on validation windows.
+- [x] M3: complete forecasting candidate comparison and frozen final evaluation.
+  - [x] Compare two baselines and a calendar-aware regression on validation windows.
+  - [x] Commit the selection record before final scoring; report holdout outcomes.
+  - [x] Diagnose training-period zero-sales runs.
 - [ ] M4: implement baseline and order-up-to simulations with flow checks.
 - [ ] M5: complete the decision dashboard including replenishment simulation.
   - [x] Run demand overview and forecast diagnostics; check default, empty and single-product filters.

@@ -10,30 +10,35 @@
 - Reconciled joined row counts and unit totals; no missing prices on positive sales.
 - Found 6,111 unpriced zero-sales rows; they remain explicit missing
   prices, not zero-priced merchandise or observed stockouts.
-- Ran two baseline forecasts across four 28-day validation windows.
-- Seven synthetic-data tests passed; real-data Streamlit checks passed for the full
+- Ran two baseline forecasts and a calendar-aware regression across four validation windows.
+- Twelve synthetic-data tests passed; real-data Streamlit checks passed for the full
   cohort, empty selection and a single product. Dependencies pass pip check.
 - Started local preview at http://127.0.0.1:8503.
 
-## Initial validation result
+## Forecasting milestone completed
 
-| Model | MAE (units per item-day) | Aggregate WAPE |
-| --- | ---: | ---: |
-| Previous-week pattern | 6.866 | 50.10% |
-| Recent 28-day mean | 6.379 | 46.55% |
+Three models have been compared: previous-week pattern, recent 28-day average,
+and calendar-aware ridge regression. Selection used pooled validation MAE and
+was frozen in commit `212c40a` before final scoring.
 
-The recent mean has 7.1% lower MAE on these validation windows. This is
-an initial baseline comparison on the selected active-product cohort, not a
-final test result or an inventory benefit. The final 28-day holdout is excluded
-from backtesting. Its records are loaded for quality checks, not used for model
-selection or the demand overview. No tuned model has been evaluated on it.
+Calendar ridge won validation (MAE 6.101) but scored 6.060 on the final holdout,
+compared with 5.911 for the recent average. The selected model remains fixed.
+[Forecasting results](FORECAST_RESULTS.md) describe all scores and limitations;
+[methodology](FORECASTING.md) describes the reproducible selection and evaluation.
+
+Training-only diagnostics found at least one 28-day zero-sales run in 36 products.
+These observations do not identify stockouts. The dashboard now displays all
+three forecasts, validation/final scores, and zero-sales diagnostics.
+
+Twelve automated tests pass. Real-data dashboard checks cover both evaluation
+periods, single-product filtering, and empty selections.
 
 ## Next milestone
 
-The next stage is a calendar-aware forecasting candidate and an analysis of long
-zero-sales runs. The model-selection rule will be fixed before final evaluation.
-Inventory-policy simulation will follow with documented lead-time, starting-stock,
-and service assumptions. Zero-sales runs alone cannot identify stockouts.
+Implement periodic-review inventory simulation and compare a fixed-cover baseline
+with an order-up-to policy. Lead times, initial stock, service targets, and event
+timing will be documented scenario inputs; outcomes will be labeled as simulated.
 
-Inventory simulation, public app deployment, and native BI reports remain future work.
-The initial implementation is versioned on the repository’s main branch.
+The final forecasting period is now inspected. Later comparisons on those days
+are retrospective rather than independent final tests. Inventory simulation,
+public app deployment, and native BI reports remain future work.

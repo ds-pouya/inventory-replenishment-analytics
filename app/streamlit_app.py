@@ -7,7 +7,7 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 st.set_page_config(page_title="Inventory | Demand diagnostics", layout="wide")
 st.title("Inventory planning")
-st.caption("M5 retail case study · Demand diagnostics · Milestone 2")
+st.caption("M5 retail case study · Demand and forecast evaluation · Milestone 3")
 st.info("Observed sales are fulfilled units, not unconstrained demand. Inventory and supplier data are unavailable; replenishment simulation is a later milestone.")
 mart = ROOT / "data/processed/daily_sales.parquet"
 if not mart.exists():
@@ -54,14 +54,24 @@ with st.expander("Data quality and scope"):
 
 metrics_path = mart.parent / "validation_metrics.json"
 if metrics_path.exists():
-    st.subheader("Forecast baseline comparison — full selected cohort")
+    st.subheader("Forecast evaluation — full selected cohort")
+    final_path = mart.parent / "final_metrics.json"
+    period = st.radio("Evaluation period", ["Validation", "Final holdout"], horizontal=True) if final_path.exists() else "Validation"
     import pandas as pd
-    metrics = pd.DataFrame(json.loads(metrics_path.read_text()))
+    if period == "Final holdout":
+        final_result = json.loads(final_path.read_text())
+        metrics = pd.DataFrame(final_result["metrics"])
+    else:
+        metrics = pd.DataFrame(json.loads(metrics_path.read_text()))
+    selection_path = ROOT / "docs/FORECAST_SELECTION.json"
+    if selection_path.exists():
+        selected = json.loads(selection_path.read_text())["selected_model"]
+        st.caption(f"Model selected from validation: {selected}. Selection remains fixed after final evaluation.")
     metrics["Forecast origin"] = metrics.origin.map(origin_dates)
     metrics = metrics.rename(columns={"model": "Model", "mae": "MAE (units)", "wape": "WAPE", "actual_units": "Actual units", "observations": "Item-days"})
     st.dataframe(metrics[["Forecast origin", "Model", "MAE (units)", "WAPE", "Actual units", "Item-days"]], width="stretch")
-    st.caption("Four historical validation windows. MAE is units per item-day; WAPE is a fraction. Final holdout evaluation has not been run.")
-    forecast_path = mart.parent / "validation_forecasts.parquet"
+    st.caption("Validation uses four 28-day windows; final holdout uses one later 28-day window. MAE is units per item-day; WAPE is a fraction. The final period has now been evaluated.")
+    forecast_path = mart.parent / ("final_forecasts.parquet" if period == "Final holdout" else "validation_forecasts.parquet")
     if forecast_path.exists():
         st.subheader("Product forecast diagnostics")
         product = st.selectbox("Product to inspect", items)
@@ -72,5 +82,14 @@ if metrics_path.exists():
         comparison["Observed sales"] = actuals
         comparison.index = pd.to_datetime([origin_dates[day] for day in comparison.index])
         comparison.index.name = "Date"
-        st.line_chart(comparison.rename(columns={"seasonal_naive_7": "Previous-week pattern", "mean_28": "Recent daily average"}))
+        st.line_chart(comparison.rename(columns={"seasonal_naive_7": "Previous-week pattern", "mean_28": "Recent daily average", "calendar_ridge": "Calendar ridge"}))
         st.caption("Forecasts are issued at each 28-day window's start; later observations inside that window are not used to update predictions.")
+
+zero_path = mart.parent / "zero_sales_diagnostics.json"
+if zero_path.exists():
+    with st.expander("Zero-sales history — training period"):
+        import pandas as pd
+        zero = pd.DataFrame(json.loads(zero_path.read_text()))
+        zero = zero[zero.item_id.isin(items)].sort_values("longest_zero_run_days", ascending=False)
+        st.dataframe(zero, width="stretch", hide_index=True)
+        st.caption("Long zero-sales runs may reflect several causes, including changes in assortment or demand. These data do not establish stockouts.")

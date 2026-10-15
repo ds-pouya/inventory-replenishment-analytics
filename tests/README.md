@@ -1,1 +1,1 @@
-Future checks: source keys and join reconciliation; forecast cutoff/leakage behavior; inventory-flow conservation, zero-demand cases, receipt timing and policy comparison reproducibility.
+Synthetic fixtures cover source keys, sales/price/calendar joins, training-only selection, forecast isolation, weekday learning, undefined WAPE, zero-run boundaries, and frozen evaluation inputs.

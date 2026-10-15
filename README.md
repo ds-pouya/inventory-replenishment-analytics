@@ -2,8 +2,8 @@
 
 A portfolio project connecting retail demand forecasting to inventory decisions.
 
-**Status:** ingestion, source validation, sales-mart generation, two forecast
-baselines, and a local Streamlit demand overview are implemented. See
+**Status:** source validation, sales-mart generation, three forecasting candidates,
+a frozen final evaluation, and a local Streamlit dashboard are implemented. See
 [run status](docs/STATUS.md) for completed real-data checks and current limitations.
 Inventory simulation and native Power BI/RDL artifacts remain future work.
 
@@ -32,6 +32,8 @@ are absent. Zero sales do not prove a stockout; sales are not unconstrained dema
 - [Data source and acquisition plan](docs/DATA_SOURCES.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Milestones](docs/MILESTONES.md)
+- [Forecasting results](docs/FORECAST_RESULTS.md)
+- [Forecast methodology](docs/FORECASTING.md)
 
 ## Layout
 
@@ -58,6 +60,7 @@ python3 -m venv .venv
 .venv/bin/python scripts/download_data.py
 .venv/bin/python scripts/build_data.py
 .venv/bin/python scripts/backtest.py
+.venv/bin/python scripts/evaluate.py
 .venv/bin/python -m streamlit run app/streamlit_app.py
 ```
 

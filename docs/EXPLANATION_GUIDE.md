@@ -26,7 +26,8 @@ It does not establish performance for intermittent or slow-moving products.
 Using future information to choose products, features or model parameters can
 make historical performance look better than a real forecast. Selection ends
 at day 1801. Each validation forecast sees only its preceding history. The
-final 28-day evaluation period is reserved for a later frozen comparison.
+final 28-day evaluation period was scored only after the selection record was
+committed. It is now inspected and cannot serve as an untouched test for later changes.
 
 ## What do the first forecasts mean?
 
@@ -46,3 +47,12 @@ Zero sales might mean no demand or unavailable inventory. M5 cannot tell us
 which. Selling prices do not tell us acquisition costs or profit. Lead times,
 stock balances and service improvements must be labeled scenario assumptions
 and simulation outcomes rather than actual retailer operations.
+
+## Why did the selected model lose on the final period?
+
+Validation chooses a model using earlier windows; it cannot guarantee the same
+ranking on a later window. Calendar ridge had the lowest validation MAE, but the
+recent average performed better on the final holdout. The selection remains
+unchanged, preserving an honest estimate of that decision's performance. Neither
+result alone determines the best inventory policy: service and inventory outcomes
+also depend on lead times, uncertainty, and replenishment rules.

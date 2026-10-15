@@ -7,7 +7,7 @@ mart, then uses that mart for forecast backtesting and demand diagnostics.
 M5 CSV files and source metadata
     -> DuckDB validation and SQL transformations
     -> daily_sales.parquet and a quality profile
-    -> rolling-origin baseline forecasts
+    -> rolling-origin candidate forecasts and frozen final evaluation
     -> Streamlit demand and forecast diagnostics
 ```
 
@@ -23,8 +23,9 @@ interface for exploring demand and comparing forecasts. The initial application
 runs locally on macOS without a paid cloud service.
 
 Direct dependencies are pinned in `requirements.txt`; `requirements-lock.txt`
-records the installed development environment. The current forecasts use simple
-statistical baselines and do not require a machine-learning framework.
+records the installed development environment. The forecasts combine statistical
+baselines with calendar-aware ridge regression
+implemented using NumPy. No external machine-learning framework is required.
 
 ## Data model
 
@@ -48,7 +49,8 @@ fingerprints. Raw and generated data are excluded from Git.
 
 Four expanding 28-day validation windows follow the initial training period.
 Each forecast uses only observations available at its origin. The final 28 days
-are reserved for evaluation after model selection.
+were evaluated after committing the selection record.
+They are now considered inspected for subsequent development.
 
 MAE measures absolute unit error per item-day. Aggregate WAPE divides total
 absolute error by total observed units; a zero denominator produces a null score.
