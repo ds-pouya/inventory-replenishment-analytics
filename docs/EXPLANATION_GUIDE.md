@@ -1,4 +1,4 @@
-# Explain the first implementation
+# Methodology and interpretation
 
 ## Why this case study?
 

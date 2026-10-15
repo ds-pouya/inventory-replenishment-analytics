@@ -1,69 +1,63 @@
 # Data sources and acquisition
 
-Status as of 2026-10-15: official endpoint returned HTTP 401. Pouya selected the
-university mirror for local analysis; acquisition and checksum verification implemented.
-See docs/STATUS.md for the latest completed run.
+The project uses M5 retail sales data from the
+[University of Nicosia record on Zenodo](https://zenodo.org/records/10203108),
+DOI 10.5281/zenodo.10203108. The record links to the original
+[M5 Forecasting — Accuracy competition](https://www.kaggle.com/competitions/m5-forecasting-accuracy/data).
 
-## Primary source
+The initial download and profiling were completed on 2026-10-15. The university
+mirror provides reproducible file access without Kaggle authentication. Source
+metadata and file fingerprints accompany the local inputs.
 
-[M5 Forecasting — Accuracy](https://www.kaggle.com/competitions/m5-forecasting-accuracy/data).
-Obtain files from the official competition after reviewing its rules. Kaggle login
-and acceptance may be required. Do not place credentials in this repository.
-The competition data is subject to its rules, not an assumed open-data license.
-Do not redistribute raw files or real-data samples until permission is established.
+## Source tables
 
-Expected inputs in `data/raw/m5/`:
+| File | Grain / role | Verified rows |
+| --- | --- | ---: |
+| `sales_train_evaluation.csv` | item-store row with daily sales through d_1941 | 30,490 |
+| `calendar.csv` | day key, date, week, events and state SNAP flags | 1,969 |
+| `sell_prices.csv` | item-store-week selling price | 6,841,121 |
 
-| File | Grain / role |
-| --- | --- |
-| `sales_train_evaluation.csv` | item-store row with daily sales columns through d_1941 |
-| `calendar.csv` | day key to date, week, events and state SNAP flags |
-| `sell_prices.csv` | item-store-week selling price |
+The sales hierarchy contains 3,049 products across 10 stores. Reshaping all
+1,941 observed days would produce approximately 59 million item-day records.
 
-The sales hierarchy spans 3,049 products across 10 stores, forming 30,490 series.
-Full evaluation sales reshape to about 59 million daily observations. These are
-source descriptions; downloaded schemas and counts still require verification.
+## Working subset
 
-## Initial working slice
+The first mart contains the 50 products with the highest unit sales at store CA_1,
+department FOODS_3, during d_1 through d_1801. Item ID breaks ties. The resulting
+97,050 observations span 2011-01-29 through 2016-05-22.
 
-Start with store CA_1 and department FOODS_3. After profiling, select the 50 item IDs
-with greatest observed unit sales in d_1 through d_1801, ties broken by item ID.
-Freeze the list before comparing models. This targets active items, so conclusions
-must not be generalized to slow-moving products or the full M5 hierarchy.
+Selection uses only the initial training interval. This favors active products,
+so results do not represent slow-moving products or the full M5 hierarchy.
 
-Use d_1..d_1801 for initial fitting/selection, four expanding 28-day validation
-windows through d_1913, and d_1914..d_1941 as the final holdout. Preserve earlier
-history for features. Future realized prices must not enter forecasts unless they
-are explicitly treated as known-in-advance scenarios; event calendars may be known.
+The evaluation schedule uses d_1..d_1801 for initial fitting and selection, four
+expanding 28-day validation windows through d_1913, and d_1914..d_1941 as the final
+holdout. Future realized selling prices are excluded from the baseline forecasts.
+Calendar events may support later models when known at forecast time.
 
-## Acquisition and profiling checklist
+## Acquisition and validation
 
-1. Download the three official files; preserve original filenames and bytes.
-2. Save a local manifest: URL, retrieval time, byte count, SHA-256, accepted terms,
-   source filename and coverage. Keep the manifest alongside ignored raw files.
-3. Check required columns, numeric ranges, row keys and expected day coverage.
-4. Check calendar day uniqueness and item-store-week price uniqueness.
-5. Count missing prices and unmatched joins; define handling before reporting.
-6. Export a small aggregate profile without redistributing source observations.
+`scripts/download_data.py` retrieves the three CSV files into `data/raw/m5/`.
+It verifies provider MD5 checksums and file sizes, then records SHA-256 hashes,
+source URLs, retrieval time, and the source metadata. Interrupted downloads retain
+a `.part` file and restart on the next run. Mismatched existing files cause an error.
 
-## Limitations
+`scripts/build_data.py` checks required sales columns, table keys, sales ranges,
+calendar matches, price coverage, join cardinality, and unit reconciliation. The
+build profile reports 6,111 zero-sales records without prices in the working subset.
+No positive-sales record is missing a price.
 
-Sales are fulfilled transactions, not necessarily true demand. Stock availability,
-lead times, orders, unit purchase costs and actual inventory are unavailable. Prices
-are selling prices, not inventory acquisition costs. Do not convert zero-sales days
-to observed stockouts. Scenario inputs must have their own provenance and labels.
+## Reuse and attribution
 
-No mirror is an automatic substitute for the original terms. If official access
-fails, document it and evaluate a replacement before changing the project dataset.
+The Zenodo API identifies access as open but does not specify a license. The
+original competition has its own rules. Public access does not establish
+unrestricted redistribution rights. Raw data, real-data samples, generated marts,
+and local manifests are excluded from Git. The repository contains code,
+documentation, synthetic test fixtures, and aggregate evaluation results.
 
-## Approved local mirror
+## Analytical limitations
 
-[University of Nicosia M5 record on Zenodo](https://zenodo.org/records/10203108),
-DOI 10.5281/zenodo.10203108, links back to the official competition. Its API
-metadata identifies access as open but does not specify a license. This does
-not establish unrestricted redistribution rights. The user approved local use
-on 2026-10-15. Raw data stays out of Git and no raw-data sample is published.
-
-`scripts/download_data.py` fetches exactly the three listed files, verifies
-provider MD5/size and records SHA-256, URLs, time and source metadata locally.
-This mirror is recorded explicitly rather than passed off as a Kaggle download.
+Sales record fulfilled transactions rather than unconstrained demand. Stock
+availability, supplier lead times, orders, acquisition costs, and actual inventory
+are absent. Zero sales do not establish a stockout, and selling prices do not
+establish profit. Inventory policy comparisons will therefore use documented
+scenario assumptions and report simulated outcomes separately from observed sales.

@@ -1,1 +1,1 @@
-Future PBIP/PBIR and semantic-model source. Require Power BI runtime validation before marking complete. No report files generated yet.
+Power BI project, report, and semantic-model source are planned reporting extensions. Validation will cover refresh, rendering, and interactions in Power BI.

@@ -1,4 +1,4 @@
-"""Acquire approved university mirror files; verify provider MD5 and record SHA-256."""
+"""Acquire university mirror files; verify provider MD5 and record SHA-256."""
 from pathlib import Path
 from datetime import datetime, timezone
 import hashlib

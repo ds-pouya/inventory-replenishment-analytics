@@ -18,7 +18,7 @@ are absent. Zero sales do not prove a stockout; sales are not unconstrained dema
 
 ## Planned approach
 
-1. Acquire and profile official M5 files; document provenance and reuse terms.
+1. Acquire and profile M5 source files; document provenance and reuse terms.
 2. Build a deterministic small subset and reconcile daily sales/price/calendar joins.
 3. Establish seasonal-naive forecasts, then evaluate alternatives chronologically.
 4. Simulate inventory policies with assumptions available at each decision date.
@@ -32,7 +32,6 @@ are absent. Zero sales do not prove a stockout; sales are not unconstrained dema
 - [Data source and acquisition plan](docs/DATA_SOURCES.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Milestones](docs/MILESTONES.md)
-- Portfolio roadmap: sibling `PORTFOLIO_PROJECT_ROADMAP.txt` in the local workspace.
 
 ## Layout
 
@@ -46,7 +45,7 @@ app/             local Streamlit demand and forecast diagnostics
 reports/         future Power BI project and paginated RDL source
 outputs/         local generated artifacts, excluded from Git
 assets/          reviewed screenshots and diagrams for publication
-tests/           future meaningful data/model/simulation checks
+tests/           synthetic fixtures for data validation and forecast isolation
 ```
 
 ## Run locally

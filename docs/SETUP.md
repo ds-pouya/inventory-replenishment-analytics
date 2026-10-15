@@ -14,10 +14,9 @@ python3 -m venv .venv
 .venv/bin/python -m streamlit run app/streamlit_app.py
 ```
 
-The first command creates an isolated environment, not a global installation.
-Acquisition needs network access; subsequent builds use the local files. The
-university mirror was explicitly selected for local analysis on 2026-10-15.
-No Kaggle key is needed. Downloads are approximately 326 MB in total.
+The virtual environment keeps dependencies isolated. Acquisition requires network
+access; subsequent builds use local files. The university mirror requires no
+Kaggle key. The three source downloads total approximately 326 MB.
 
 The downloader verifies the provider's MD5 and records local SHA-256 hashes,
 URLs, sizes and retrieval time under ignored `data/raw/m5/`. MD5 here is an
@@ -40,5 +39,5 @@ holdout, and reads local generated Parquet. It is not yet deployed publicly.
 - `data/processed/validation_forecasts.parquet`: forecasts/actuals by model and origin.
 - `data/processed/validation_metrics.json`: per-window MAE and aggregate WAPE.
 
-These files are ignored by Git. Publish reviewed aggregate findings separately;
-do not commit the underlying source records as a dashboard deployment shortcut.
+These generated files are ignored by Git. Published results contain aggregate
+findings; the source records remain local.

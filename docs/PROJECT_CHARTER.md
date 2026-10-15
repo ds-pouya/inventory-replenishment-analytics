@@ -18,10 +18,10 @@ best for a stated subset and assumptions, including uncertainty and tradeoffs.
 
 ## Boundaries
 
-No actual-stockout detection, supplier performance, measured procurement savings,
-causal price-elasticity claims, or production inventory integration. No duplication
-of the separate procurement, solar, credit-risk or bike-share portfolio projects.
-No claimed customer or employer engagement: this is an independent public-data case.
+This independent public-data case study covers demand planning and simulated
+inventory policies. The available data does not support actual-stockout detection,
+supplier performance, measured procurement savings, or causal price-elasticity
+estimates. Production inventory integration is outside the project scope.
 
 ## Planned outputs
 
@@ -31,7 +31,8 @@ walkthrough explains data grain, joins, metrics, assumptions and why results dif
 
 ## Acceptance
 
-Reproducible subset, join reconciliation, leakage-safe backtests, honest baseline
-comparison, inventory-flow conservation checks, source/assumption attribution,
-a working demo and screenshots. Improvement is a hypothesis, not a requirement to
-manufacture a positive finding. Publish costs and service changes as simulation.
+Completion criteria include a reproducible subset, reconciled joins, backtests
+without future-data leakage, baseline comparisons, inventory-flow conservation
+checks, source attribution, and a working demonstration. Model improvements are
+measured against the baselines. Cost and service comparisons will be reported as
+simulation results with their assumptions.

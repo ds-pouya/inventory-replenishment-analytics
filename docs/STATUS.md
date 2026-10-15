@@ -2,7 +2,7 @@
 
 ## Completed and verified locally
 
-- Downloaded the three M5 inputs from the explicitly approved university mirror;
+- Downloaded the three M5 inputs from the university Zenodo mirror;
   provider size/MD5 checks passed and SHA-256/source metadata recorded locally.
 - Profiled 30,490 sales series, 1,969 calendar rows and 6,841,121 weekly prices.
 - Built a 50-product CA_1 / FOODS_3 mart with 97,050 item-day observations,
@@ -30,9 +30,10 @@ selection or the demand overview. No tuned model has been evaluated on it.
 
 ## Next milestone
 
-Add a calendar-aware forecasting candidate and investigate long zero-sales runs
-without claiming stockouts. Freeze the model-selection rule before final evaluation.
-Then implement and validate inventory-policy simulation with explicit assumptions.
+The next stage is a calendar-aware forecasting candidate and an analysis of long
+zero-sales runs. The model-selection rule will be fixed before final evaluation.
+Inventory-policy simulation will follow with documented lead-time, starting-stock,
+and service assumptions. Zero-sales runs alone cannot identify stockouts.
 
 Inventory simulation, public app deployment, and native BI reports remain future work.
-The source repository is being initialized with this implementation as its first commit.
+The initial implementation is versioned on the repository’s main branch.

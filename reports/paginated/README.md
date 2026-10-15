@@ -1,1 +1,1 @@
-Future RDL inventory exception report. Require expression, data connection, pagination and export validation in the target runtime.
+A paginated inventory exception report is planned in RDL format. Validation will cover expressions, data connections, pagination, and exports in the reporting runtime.

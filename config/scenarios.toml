@@ -10,6 +10,6 @@ service_target = 0.95
 unmet_demand_behavior = "lost_sales"
 monetary_costs_enabled = false
 
-# Estimate initial units using training history only. The implementation must
-# specify within-day ordering of receipts, demand, review and order placement.
-# A service target is a policy input, not a guaranteed achieved fill rate.
+# Initial stock will be estimated from training history. Within-day receipt,
+# demand, review and order timing will be defined with the simulation model.
+# The service target is a policy input; achieved fill rate is a measured output.
