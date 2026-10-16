@@ -20,7 +20,8 @@ compact analytical format that both the forecasting code and dashboard can read.
 
 Python coordinates acquisition, validation, and backtesting. pandas handles the
 forecast comparisons and dashboard summaries. Streamlit provides an interactive
-interface for exploring demand and comparing forecasts. The initial application
+interface for exploring demand, forecasts, and policy scenarios. `presentation.py`
+aggregates filtered metrics and applies the dashboard’s service-threshold rule. The application
 runs locally on macOS without a paid cloud service.
 
 Direct dependencies are pinned in `requirements.txt`; `requirements-lock.txt`

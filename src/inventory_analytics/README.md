@@ -1,1 +1,1 @@
-`pipeline.py` builds the validated sales mart. `forecasting.py` compares models and enforces frozen evaluation. `simulation.py` replays inventory policies with daily stock, demand, and pipeline conservation checks.
+`pipeline.py` builds the validated sales mart. `forecasting.py` compares models and enforces frozen evaluation. `simulation.py` replays inventory policies with daily stock, demand, and pipeline conservation checks. `presentation.py` calculates filtered dashboard metrics and interprets service-constrained policy comparisons.

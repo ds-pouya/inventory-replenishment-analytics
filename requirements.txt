@@ -2,3 +2,4 @@ duckdb==1.4.3
 streamlit==1.50.0
 numpy==2.5.4
 pandas==2.3.3
+altair==5.5.0

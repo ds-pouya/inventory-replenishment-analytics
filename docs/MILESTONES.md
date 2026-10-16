@@ -10,10 +10,11 @@
   - [x] Diagnose training-period zero-sales runs.
 - [x] M4: implement baseline and order-up-to simulations with flow checks.
   - [x] Compare nine lead-time/initial-stock scenarios and verify deterministic reruns.
-- [ ] M5: complete the decision dashboard including replenishment simulation.
+- [x] M5: complete the decision dashboard including replenishment simulation.
   - [x] Run demand overview and forecast diagnostics; check default, empty and single-product filters.
   - [x] Integrate simulation scenario comparison and product filtering.
-  - [ ] Finish decision summaries, presentation layout, and visual review.
+  - [x] Finish decision summaries, presentation layout, and desktop visual review.
+  - [x] Verify product-filter consistency, service-threshold logic, and aggregate exports.
 - [ ] M6: publish findings, screenshots, and a technical walkthrough.
 - [ ] M7: add Power BI/PBIR/model and RDL only with target-runtime validation.
 

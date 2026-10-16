@@ -1,4 +1,4 @@
-# Implementation status — 2026-10-15
+# Implementation status — 2026-10-16
 
 ## Completed and verified locally
 
@@ -46,8 +46,20 @@ not a financial saving or a policy that dominates on both measures. These result
 use historical sales as a proxy and hypothetical starting stock and lead times.
 [Simulation results](SIMULATION_RESULTS.md) report the full sensitivity grid.
 
+## Decision dashboard milestone completed
+
+The application has four views: Overview, Inventory, Demand, and Forecasts.
+Decision summaries respect a chosen fill-rate threshold and identify tradeoffs
+without assigning monetary benefits. Scenario comparisons, product exceptions,
+aggregate downloads, and forecast/demand drill-downs share consistent cohort filters.
+Undefined service and stock changes are handled without false recommendations.
+
+The light theme and chart labels have been reviewed across all four desktop views.
+All 31 local checks pass: 28 unit checks and three dashboard integration checks.
+[Dashboard guide](DASHBOARD.md) documents navigation, filters, and interpretation.
+
 ## Next milestone
 
-Complete the decision dashboard's summaries, presentation layout, and visual
-review. Inventory inputs and replay limitations will remain visible alongside
-comparisons. Public app deployment and native BI reports remain future work.
+Prepare the publication package: repository screenshots, a concise case-study
+narrative, and a technical walkthrough. Public app deployment and native Power BI /
+paginated reports remain separate work.

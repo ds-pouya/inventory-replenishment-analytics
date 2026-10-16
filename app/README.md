@@ -1,1 +1,1 @@
-Run `.venv/bin/python -m streamlit run app/streamlit_app.py` from the repository root after building local data.
+Run `.venv/bin/python -m streamlit run app/streamlit_app.py` from the repository root after building local outputs. Four views cover decisions, inventory scenarios, demand, and forecast evidence. See docs/DASHBOARD.md.

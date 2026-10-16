@@ -6,7 +6,8 @@ A portfolio project connecting retail demand forecasting to inventory decisions.
 a frozen final evaluation, inventory-policy replay, and a local Streamlit dashboard
 are implemented. See
 [run status](docs/STATUS.md) for completed real-data checks and current limitations.
-Dashboard presentation remains in progress; native Power BI/RDL reports are planned.
+The four-view decision dashboard is complete locally; publication assets and native
+Power BI/RDL reports are planned.
 
 ## Business decision
 
@@ -36,6 +37,7 @@ are absent. Zero sales do not prove a stockout; sales are not unconstrained dema
 - [Forecasting results](docs/FORECAST_RESULTS.md)
 - [Forecast methodology](docs/FORECASTING.md)
 - [Inventory simulation results](docs/SIMULATION_RESULTS.md)
+- [Dashboard guide](docs/DASHBOARD.md)
 
 ## Layout
 
