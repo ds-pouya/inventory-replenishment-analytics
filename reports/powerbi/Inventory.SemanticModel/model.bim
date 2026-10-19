@@ -1,0 +1,284 @@
+{
+  "name": "Inventory",
+  "compatibilityLevel": 1601,
+  "model": {
+    "culture": "en-US",
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "expressions": [
+      {
+        "name": "DataFolder",
+        "kind": "m",
+        "expression": "\"C:/inventory-data/native\" meta [IsParameterQuery=true, Type=\"Text\", IsParameterQueryRequired=true]"
+      }
+    ],
+    "tables": [
+      {
+        "name": "Ledger",
+        "columns": [
+          {
+            "name": "scenario_id",
+            "dataType": "string",
+            "sourceColumn": "scenario_id",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "policy",
+            "dataType": "string",
+            "sourceColumn": "policy",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "item_id",
+            "dataType": "string",
+            "sourceColumn": "item_id",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "date",
+            "dataType": "dateTime",
+            "sourceColumn": "date",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "demand_proxy_units",
+            "dataType": "int64",
+            "sourceColumn": "demand_proxy_units",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "fulfilled_units",
+            "dataType": "int64",
+            "sourceColumn": "fulfilled_units",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "lost_units",
+            "dataType": "int64",
+            "sourceColumn": "lost_units",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "ending_stock",
+            "dataType": "int64",
+            "sourceColumn": "ending_stock",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "ordered_units",
+            "dataType": "int64",
+            "sourceColumn": "ordered_units",
+            "summarizeBy": "none",
+            "isHidden": true
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Ledger",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"/Ledger.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"scenario_id\", type text}, {\"policy\", type text}, {\"item_id\", type text}, {\"date\", type date}, {\"demand_proxy_units\", Int64.Type}, {\"fulfilled_units\", Int64.Type}, {\"lost_units\", Int64.Type}, {\"ending_stock\", Int64.Type}, {\"ordered_units\", Int64.Type}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Demand proxy units",
+            "expression": "VAR ChosenScenario = SELECTEDVALUE(Scenario[scenario_id], IF(NOT ISFILTERED(Scenario[scenario_id]), \"L7_R7_I14\"))\nRETURN IF(NOT ISBLANK(ChosenScenario) && HASONEVALUE(Policy[policy]),\n    CALCULATE(SUM(Ledger[demand_proxy_units]), TREATAS({ChosenScenario}, Scenario[scenario_id])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Fulfilled units",
+            "expression": "VAR ChosenScenario = SELECTEDVALUE(Scenario[scenario_id], IF(NOT ISFILTERED(Scenario[scenario_id]), \"L7_R7_I14\"))\nRETURN IF(NOT ISBLANK(ChosenScenario) && HASONEVALUE(Policy[policy]),\n    CALCULATE(SUM(Ledger[fulfilled_units]), TREATAS({ChosenScenario}, Scenario[scenario_id])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Unmet proxy units",
+            "expression": "VAR ChosenScenario = SELECTEDVALUE(Scenario[scenario_id], IF(NOT ISFILTERED(Scenario[scenario_id]), \"L7_R7_I14\"))\nRETURN IF(NOT ISBLANK(ChosenScenario) && HASONEVALUE(Policy[policy]),\n    CALCULATE(SUM(Ledger[lost_units]), TREATAS({ChosenScenario}, Scenario[scenario_id])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Unit fill rate",
+            "expression": "VAR ChosenScenario = SELECTEDVALUE(Scenario[scenario_id], IF(NOT ISFILTERED(Scenario[scenario_id]), \"L7_R7_I14\"))\nRETURN IF(NOT ISBLANK(ChosenScenario) && HASONEVALUE(Policy[policy]),\n    CALCULATE(DIVIDE(SUM(Ledger[fulfilled_units]), SUM(Ledger[demand_proxy_units])), TREATAS({ChosenScenario}, Scenario[scenario_id])))",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "Average closing inventory",
+            "expression": "VAR ChosenScenario = SELECTEDVALUE(Scenario[scenario_id], IF(NOT ISFILTERED(Scenario[scenario_id]), \"L7_R7_I14\"))\nRETURN IF(NOT ISBLANK(ChosenScenario) && HASONEVALUE(Policy[policy]),\n    CALCULATE(AVERAGEX(VALUES('Date'[date]), CALCULATE(SUM(Ledger[ending_stock]))), TREATAS({ChosenScenario}, Scenario[scenario_id])))",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Ordered units",
+            "expression": "VAR ChosenScenario = SELECTEDVALUE(Scenario[scenario_id], IF(NOT ISFILTERED(Scenario[scenario_id]), \"L7_R7_I14\"))\nRETURN IF(NOT ISBLANK(ChosenScenario) && HASONEVALUE(Policy[policy]),\n    CALCULATE(SUM(Ledger[ordered_units]), TREATAS({ChosenScenario}, Scenario[scenario_id])))",
+            "formatString": "#,0"
+          }
+        ]
+      },
+      {
+        "name": "Scenario",
+        "columns": [
+          {
+            "name": "scenario_id",
+            "dataType": "string",
+            "sourceColumn": "scenario_id",
+            "summarizeBy": "none",
+            "isHidden": false
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Scenario",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"/Scenario.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"scenario_id\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Policy",
+        "columns": [
+          {
+            "name": "policy",
+            "dataType": "string",
+            "sourceColumn": "policy",
+            "summarizeBy": "none",
+            "isHidden": false
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Policy",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"/Policy.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"policy\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Product",
+        "columns": [
+          {
+            "name": "item_id",
+            "dataType": "string",
+            "sourceColumn": "item_id",
+            "summarizeBy": "none",
+            "isHidden": false
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Product",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"/Product.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"item_id\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Date",
+        "columns": [
+          {
+            "name": "date",
+            "dataType": "dateTime",
+            "sourceColumn": "date",
+            "summarizeBy": "none",
+            "isHidden": false
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Date",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"/Date.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {{\"date\", type date}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "Ledger_Scenario",
+        "fromTable": "Ledger",
+        "fromColumn": "scenario_id",
+        "toTable": "Scenario",
+        "toColumn": "scenario_id",
+        "crossFilteringBehavior": "oneDirection"
+      },
+      {
+        "name": "Ledger_Policy",
+        "fromTable": "Ledger",
+        "fromColumn": "policy",
+        "toTable": "Policy",
+        "toColumn": "policy",
+        "crossFilteringBehavior": "oneDirection"
+      },
+      {
+        "name": "Ledger_Product",
+        "fromTable": "Ledger",
+        "fromColumn": "item_id",
+        "toTable": "Product",
+        "toColumn": "item_id",
+        "crossFilteringBehavior": "oneDirection"
+      },
+      {
+        "name": "Ledger_Date",
+        "fromTable": "Ledger",
+        "fromColumn": "date",
+        "toTable": "Date",
+        "toColumn": "date",
+        "crossFilteringBehavior": "oneDirection"
+      }
+    ]
+  }
+}

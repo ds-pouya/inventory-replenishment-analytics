@@ -20,6 +20,8 @@
   - [x] Capture all four dashboard views and record their context and file hashes.
   - [x] Document the full analytical sequence and an end-to-end demonstration.
 - [ ] M7: add Power BI/PBIR/model and RDL only with target-runtime validation.
+  - [x] Author PBIP/PBIR/TMSL and parameterized RDL sources; check schemas and local extracts.
+  - [ ] Validate native model refresh, DAX, report interactions, pagination, and exports.
 
 Release criteria include a reproducible setup, code licensing, source attribution,
 completed validation, and documented limitations. Raw data and credentials remain

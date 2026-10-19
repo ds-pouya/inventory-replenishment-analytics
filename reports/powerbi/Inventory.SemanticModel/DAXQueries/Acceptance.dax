@@ -1,0 +1,22 @@
+// Base case: compare the two rows with reports/powerbi/README.md.
+EVALUATE
+SUMMARIZECOLUMNS(
+    Policy[policy],
+    TREATAS({"L7_R7_I14"}, Scenario[scenario_id]),
+    "Demand proxy", [Demand proxy units],
+    "Unit fill", [Unit fill rate],
+    "Average closing inventory", [Average closing inventory],
+    "Unmet proxy", [Unmet proxy units]
+)
+ORDER BY Policy[policy]
+
+// Alternative-policy totals must be BLANK.
+EVALUATE ROW("Policy total fill must be blank", [Unit fill rate])
+
+// Multiple selected scenarios must be BLANK even with a single policy.
+EVALUATE
+CALCULATETABLE(
+    ROW("Multiple scenarios must be blank", [Unit fill rate]),
+    TREATAS({"L3_R7_I7", "L7_R7_I14"}, Scenario[scenario_id]),
+    TREATAS({"fixed_cover"}, Policy[policy])
+)

@@ -3,3 +3,4 @@ streamlit==1.50.0
 numpy==2.5.4
 pandas==2.3.3
 altair==5.5.0
+jsonschema==4.26.0

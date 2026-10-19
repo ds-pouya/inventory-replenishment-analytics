@@ -65,3 +65,21 @@ sales mart, the source calendar, and pre-replay validation errors. It writes:
 These outputs remain under ignored `data/processed/`. The dashboard's scenario
 selector compares the precomputed grid; changing the configuration requires
 rerunning `simulate.py`. No live policy optimization is performed.
+
+## Native report sources
+
+After the simulation, generate local extracts and reporting definitions:
+
+```bash
+.venv/bin/python scripts/build_native_reports.py
+.venv/bin/python scripts/validate_native_reports.py
+```
+
+The builder checks every exported scenario-policy comparison against the published
+simulation results and writes a local reconciliation record under `outputs/`.
+The schema checker needs internet access on its first run and `xmllint` (available
+on macOS). Generated CSV data stays under ignored `data/processed/native/`.
+No Power BI runtime is installed by these commands. Follow the
+[Power BI](../reports/powerbi/README.md) and [RDL](../reports/paginated/README.md)
+acceptance procedures before claiming native runtime validation. The builder
+regenerates report definitions; preserve any manual report edits first.

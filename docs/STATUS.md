@@ -72,9 +72,18 @@ The materials retain the difference between observed sales and simulated invento
 All 31 local checks pass. A separate temporary rebuild from the verified raw inputs
 passed frozen forecast evaluation and reproduced all 18 scenario-policy summaries.
 
-## Next milestone
+## Native reporting source phase
 
-Add native Power BI project/report/model source and a paginated RDL exception
-report, with refresh, rendering, and export validation in the appropriate runtime.
-No native report is currently validated. The Python app remains a local application;
-public hosting is separate from this completed repository publication package.
+Added a PBIP project with two PBIR pages, a TMSL semantic model, and a parameterized
+RDL inventory exception report. A repeatable build creates five local CSV tables
+from the verified simulation ledger. All 18 scenario-policy pairs reconcile with
+the published unit-fill, average-stock, and unmet-unit results.
+
+Fifteen report/project JSON documents pass Microsoft's public schemas; the RDL
+passes Microsoft's 2016/01 XSD. All 35 project tests and pip check pass.
+[Native validation record](../reports/VALIDATION.md) distinguishes these source
+checks from pending runtime validation. Model load, DAX and Power Query execution,
+report rendering, RDL connections, pagination, and exports remain unverified.
+M7 remains open until those checks can run in Power BI Desktop/Report Builder or
+an appropriate service environment. The Python app remains the demonstrated
+application; public hosting is a separate deployment step.

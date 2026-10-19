@@ -129,6 +129,9 @@ Data: [University of Nicosia M5 record on Zenodo](https://zenodo.org/records/102
 linked to the original M5 competition. Access does not establish unrestricted
 redistribution rights; see [source and reuse notes](docs/DATA_SOURCES.md).
 
-**Status:** the Python dashboard and publication package are complete. Native
-Power BI and paginated reports are planned separately; no `.pbix` or `.rdl`
-artifact has been validated yet. [Milestones](docs/MILESTONES.md).
+**Status:** the Python dashboard and publication package are complete.
+Native [Power BI project](reports/powerbi/README.md) and
+[paginated RDL](reports/paginated/README.md) sources are available. JSON/XSD and
+extract reconciliation checks pass; native refresh, rendering, and exports remain
+unverified. See the [validation record](reports/VALIDATION.md) and
+[milestones](docs/MILESTONES.md).

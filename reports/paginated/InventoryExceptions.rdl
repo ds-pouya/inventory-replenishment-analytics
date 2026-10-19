@@ -1,0 +1,530 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition">
+  <Description>Simulated inventory exceptions. Historical fulfilled sales proxy demand; all inventory inputs are hypothetical.</Description>
+  <DataSources>
+    <DataSource Name="InventoryModel">
+      <ConnectionProperties>
+        <DataProvider>PBIDATASET</DataProvider>
+        <ConnectString>Data Source=pbiazure://api.powerbi.com/;Initial Catalog=sobe_wowvirtualserver-SEMANTIC_MODEL_ID;Integrated Security=ClaimsToken</ConnectString>
+      </ConnectionProperties>
+    </DataSource>
+  </DataSources>
+  <ReportParameters>
+    <ReportParameter Name="Scenario">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>L7_R7_I14</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Scenario</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>L3_R7_I7</Value>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>L3_R7_I14</Value>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>L3_R7_I28</Value>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>L7_R7_I7</Value>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>L7_R7_I14</Value>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>L7_R7_I28</Value>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>L14_R7_I7</Value>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>L14_R7_I14</Value>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>L14_R7_I28</Value>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="Policy">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>order_up_to</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Policy</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>fixed_cover</Value>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>order_up_to</Value>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+  </ReportParameters>
+  <DataSets>
+    <DataSet Name="Exceptions">
+      <Query>
+        <DataSourceName>InventoryModel</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="Scenario">
+            <Value>=Parameters!Scenario.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="Policy">
+            <Value>=Parameters!Policy.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>EVALUATE
+VAR Products = SUMMARIZECOLUMNS(
+    Product[item_id],
+    TREATAS({@Scenario}, Scenario[scenario_id]),
+    TREATAS({@Policy}, Policy[policy]),
+    "Demand", [Demand proxy units], "Unmet", [Unmet proxy units],
+    "Fill", [Unit fill rate], "Stock", [Average closing inventory])
+RETURN SELECTCOLUMNS(FILTER(Products, [Unmet] &gt; 0),
+    "Item", Product[item_id], "Demand", [Demand], "Unmet", [Unmet], "Fill", [Fill], "Stock", [Stock])
+ORDER BY [Unmet] DESC, [Item] ASC</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Item">
+          <DataField>[Item]</DataField>
+        </Field>
+        <Field Name="Demand">
+          <DataField>[Demand]</DataField>
+        </Field>
+        <Field Name="Unmet">
+          <DataField>[Unmet]</DataField>
+        </Field>
+        <Field Name="Fill">
+          <DataField>[Fill]</DataField>
+        </Field>
+        <Field Name="Stock">
+          <DataField>[Stock]</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Textbox Name="Title">
+            <CanGrow>true</CanGrow>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Inventory exception report</Value>
+                    <Style>
+                      <FontSize>10pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+              </Paragraph>
+            </Paragraphs>
+            <Style>
+              <PaddingLeft>4pt</PaddingLeft>
+              <PaddingTop>3pt</PaddingTop>
+            </Style>
+            <Top>0in</Top>
+            <Left>0in</Left>
+            <Height>0.3in</Height>
+            <Width>7.2in</Width>
+          </Textbox>
+          <Textbox Name="Scope">
+            <CanGrow>true</CanGrow>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!Scenario.Value &amp; " | " &amp; Parameters!Policy.Value &amp; " | products with unmet proxy units &gt; 0"</Value>
+                    <Style>
+                      <FontSize>10pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+              </Paragraph>
+            </Paragraphs>
+            <Style>
+              <PaddingLeft>4pt</PaddingLeft>
+              <PaddingTop>3pt</PaddingTop>
+            </Style>
+            <Top>0.35in</Top>
+            <Left>0in</Left>
+            <Height>0.3in</Height>
+            <Width>7.2in</Width>
+          </Textbox>
+          <Textbox Name="Caveat">
+            <CanGrow>true</CanGrow>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Retrospective sales replay, 25 Apr–22 May 2016. Hypothetical inventory inputs. Unmet units are simulated; selling prices do not establish profit.</Value>
+                    <Style>
+                      <FontSize>10pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+              </Paragraph>
+            </Paragraphs>
+            <Style>
+              <PaddingLeft>4pt</PaddingLeft>
+              <PaddingTop>3pt</PaddingTop>
+            </Style>
+            <Top>0.7in</Top>
+            <Left>0in</Left>
+            <Height>0.45in</Height>
+            <Width>7.2in</Width>
+          </Textbox>
+          <Tablix Name="ExceptionList">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>2in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.2in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.2in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.2in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.6in</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.3in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Item_0">
+                          <CanGrow>true</CanGrow>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Product</Value>
+                                  <Style>
+                                    <FontSize>10pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingTop>3pt</PaddingTop>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Demand_0">
+                          <CanGrow>true</CanGrow>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Sales proxy</Value>
+                                  <Style>
+                                    <FontSize>10pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingTop>3pt</PaddingTop>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Unmet_0">
+                          <CanGrow>true</CanGrow>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Unmet units</Value>
+                                  <Style>
+                                    <FontSize>10pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingTop>3pt</PaddingTop>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Fill_0">
+                          <CanGrow>true</CanGrow>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Unit fill</Value>
+                                  <Style>
+                                    <FontSize>10pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingTop>3pt</PaddingTop>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Stock_0">
+                          <CanGrow>true</CanGrow>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Avg stock</Value>
+                                  <Style>
+                                    <FontSize>10pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingTop>3pt</PaddingTop>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.3in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Item_1">
+                          <CanGrow>true</CanGrow>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Item.Value</Value>
+                                  <Style>
+                                    <FontSize>10pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingTop>3pt</PaddingTop>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Demand_1">
+                          <CanGrow>true</CanGrow>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Demand.Value</Value>
+                                  <Style>
+                                    <FontSize>10pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingTop>3pt</PaddingTop>
+                            <Format>N0</Format>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Unmet_1">
+                          <CanGrow>true</CanGrow>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Unmet.Value</Value>
+                                  <Style>
+                                    <FontSize>10pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingTop>3pt</PaddingTop>
+                            <Format>N0</Format>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Fill_1">
+                          <CanGrow>true</CanGrow>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Fill.Value</Value>
+                                  <Style>
+                                    <FontSize>10pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingTop>3pt</PaddingTop>
+                            <Format>P2</Format>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Stock_1">
+                          <CanGrow>true</CanGrow>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Stock.Value</Value>
+                                  <Style>
+                                    <FontSize>10pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <PaddingLeft>4pt</PaddingLeft>
+                            <PaddingTop>3pt</PaddingTop>
+                            <Format>N1</Format>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <KeepWithGroup>After</KeepWithGroup>
+                  <RepeatOnNewPage>true</RepeatOnNewPage>
+                </TablixMember>
+                <TablixMember>
+                  <Group Name="DetailRows" />
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>Exceptions</DataSetName>
+            <NoRowsMessage>No products with simulated unmet units for this selection.</NoRowsMessage>
+            <Top>1.3in</Top>
+            <Left>0in</Left>
+            <Height>0.6in</Height>
+            <Width>7.2in</Width>
+          </Tablix>
+        </ReportItems>
+        <Height>2in</Height>
+      </Body>
+      <Width>7.2in</Width>
+      <Page>
+        <PageFooter>
+          <Height>0.3in</Height>
+          <ReportItems>
+            <Textbox Name="PageNumber">
+              <CanGrow>true</CanGrow>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>= "Page " &amp; Globals!PageNumber &amp; " of " &amp; Globals!TotalPages</Value>
+                      <Style>
+                        <FontSize>10pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                </Paragraph>
+              </Paragraphs>
+              <Style>
+                <PaddingLeft>4pt</PaddingLeft>
+                <PaddingTop>3pt</PaddingTop>
+              </Style>
+              <Top>0in</Top>
+              <Left>0in</Left>
+              <Height>0.3in</Height>
+              <Width>7.2in</Width>
+            </Textbox>
+          </ReportItems>
+        </PageFooter>
+        <PageHeight>11.7in</PageHeight>
+        <PageWidth>8.3in</PageWidth>
+        <LeftMargin>0.5in</LeftMargin>
+        <RightMargin>0.5in</RightMargin>
+        <TopMargin>0.5in</TopMargin>
+        <BottomMargin>0.5in</BottomMargin>
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Language>en-US</Language>
+</Report>

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "ProductMetrics",
+  "position": {
+    "x": 24,
+    "y": 160,
+    "width": 1232,
+    "height": 530,
+    "z": 0,
+    "tabOrder": 184
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Product"
+                    }
+                  },
+                  "Property": "item_id"
+                }
+              },
+              "queryRef": "Product.item_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Policy"
+                    }
+                  },
+                  "Property": "policy"
+                }
+              },
+              "queryRef": "Policy.policy"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Ledger"
+                    }
+                  },
+                  "Property": "Demand proxy units"
+                }
+              },
+              "queryRef": "Ledger.Demand proxy units"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Ledger"
+                    }
+                  },
+                  "Property": "Unit fill rate"
+                }
+              },
+              "queryRef": "Ledger.Unit fill rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Ledger"
+                    }
+                  },
+                  "Property": "Unmet proxy units"
+                }
+              },
+              "queryRef": "Ledger.Unmet proxy units"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Ledger"
+                    }
+                  },
+                  "Property": "Average closing inventory"
+                }
+              },
+              "queryRef": "Ledger.Average closing inventory"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
