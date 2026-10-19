@@ -99,5 +99,7 @@ All 38 local checks pass, including a clean-copy demo test without M5 data, bund
 hashes, navigation, filters, forecasts, and inventory accounting. A read-only
 GitHub Actions workflow runs project checks on clean Linux checkouts.
 The [deployment guide](DEPLOYMENT.md) records the repository, entry point, Python
-version, and public smoke-test procedure. Hosting and a verified live URL remain
-pending; M8 is not yet complete.
+version, and public smoke-test procedure. The [public synthetic demo](https://pouya-inventory-planning.streamlit.app/)
+is deployed and linked from GitHub. Live navigation, a scenario change, final-period
+forecasts, and CSV export passed browser checks. Public visibility and anonymous
+HTTP/health access passed; the Linux CI run passed. M8 is complete.

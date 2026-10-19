@@ -12,8 +12,10 @@ demo has 24 invented products and different metrics; every view labels that
 provenance. [Bundle description](../data/demo/README.md).
 
 Local verification on 2026-10-19: 38 checks passed, including a clean-copy public
-app run without raw data or M5 outputs. Public hosting is pending deployment;
-no live URL is claimed here.
+app run without raw data or M5 outputs. An independent regeneration matched all
+eight shipped file hashes. The [Linux CI run](https://github.com/ds-pouya/inventory-replenishment-analytics/actions/runs/39310328265)
+passed on commit `07eff23` (35 passed, three M5-only app checks skipped). The app is publicly deployed at
+[Inventory Planning](https://pouya-inventory-planning.streamlit.app/).
 
 ## Streamlit Community Cloud settings
 
@@ -25,7 +27,7 @@ no live URL is claimed here.
 | Python | `3.13` in Advanced settings |
 | Dependencies | Root `requirements.txt` |
 | Secrets | None |
-| Suggested subdomain, subject to availability | `pouya-inventory-planning` |
+| Public subdomain | `pouya-inventory-planning` |
 
 Sign in at [Streamlit Community Cloud](https://share.streamlit.io/), select
 **Create app**, and enter the settings above. Use public-app visibility for
@@ -51,9 +53,9 @@ be different. [Official deployment instructions](https://docs.streamlit.io/deplo
 
 | Deployment record | Value |
 | --- | --- |
-| Public URL | Pending |
-| Deployed commit | Pending |
-| Public smoke test | Pending |
+| Public URL | https://pouya-inventory-planning.streamlit.app/ |
+| First verified deployment commit | `07eff23d038508692826ae65d98cf4eec0b49e1e` (app tracks `main`) |
+| Public smoke test | Passed on 2026-10-19 |
 
 ## Local demo and regeneration
 
@@ -79,3 +81,19 @@ it does not regenerate data on startup.
 Repository CI uses read-only GitHub permissions and runs the unit/integration
 suite on Python 3.13. The three local M5 dashboard checks skip when local analysis
 is absent; the public demo checks run on every clean checkout.
+
+### Deployment evidence
+
+- All four live views rendered with the synthetic notice.
+- Final-period forecast selection and a three-day supplier scenario responded.
+- The downloaded base-case policy CSV matched the shipped simulation: fixed cover
+  100.00% fill / 5,152.79 mean stock / 0 unmet units; order-up-to 99.68% / 3,027.57 / 43.
+- Streamlit's public-sharing control was checked. A fresh anonymous HTTP session
+  returned 200 for the public page and 200 / `ok` for the app health endpoint,
+  using only visitor cookies issued during that request.
+- The GitHub repository's website field points to the same public URL.
+
+The browser smoke test used the owner session; a separate signed-out interactive
+browser test was not run. Public visibility and anonymous HTTP/health access were
+verified independently. Local integration tests cover product/scenario/threshold
+changes and empty selections in more detail.

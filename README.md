@@ -7,6 +7,11 @@ forecast evaluation, and inventory-policy simulation in an interactive Streamlit
 
 **Python · SQL / DuckDB · pandas · NumPy · Altair · Streamlit**
 
+[**Open the live synthetic demo**](https://pouya-inventory-planning.streamlit.app/) · [M5 findings](#what-i-found)
+
+The live demo uses independently generated data. The findings and screenshots
+below come from the separate M5 case study.
+
 ![Inventory planning overview showing the simulated stock and service tradeoff](assets/screenshots/overview.jpg)
 
 ## The decision
@@ -67,8 +72,8 @@ A distributable **synthetic demo** runs from a clean checkout with no M5 downloa
 
 Its 24 invented products demonstrate the same dashboard with different results.
 Every view identifies the synthetic data; the findings and screenshots above
-remain the M5 analysis. Public hosting is pending; the
-[deployment guide](docs/DEPLOYMENT.md) provides the ready-to-use settings.
+remain the M5 analysis. [Open the public demo](https://pouya-inventory-planning.streamlit.app/). The
+[deployment guide](docs/DEPLOYMENT.md) records its settings and verification.
 The screenshots and results are available here without installing the app. The [dashboard gallery](docs/DASHBOARD_GALLERY.md) contains
 the demand and forecast views; the [dashboard guide](docs/DASHBOARD.md) explains filters.
 

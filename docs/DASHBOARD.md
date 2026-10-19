@@ -67,3 +67,10 @@ checks. The integration checks skip when the local analysis has not been built.
 
 The application reads local generated outputs. Publication screenshots are available
 in the [gallery](DASHBOARD_GALLERY.md); public deployment remains separate.
+
+## Public synthetic demo
+
+The [hosted demo](https://pouya-inventory-planning.streamlit.app/) uses the same
+interface with 24 invented products and different results. It always loads the
+versioned `data/demo/` bundle, and its visible notice distinguishes it from the
+M5 case study documented above. See [deployment evidence](DEPLOYMENT.md).
