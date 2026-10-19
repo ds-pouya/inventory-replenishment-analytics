@@ -26,13 +26,17 @@ h3 {font-size:1.12rem!important;}
 @media(max-width:700px) {.block-container {padding-left:1rem; padding-right:1rem;} h1 {font-size:1.9rem!important;}}
 </style>''', unsafe_allow_html=True)
 
-OUT = ROOT / 'data/processed'
+DEMO = globals().get('DATA_MODE', 'local') == 'demo'
+OUT = ROOT / ('data/demo' if DEMO else 'data/processed')
 required = ['daily_sales.parquet', 'profile.json', 'build_config.json',
             'simulation_summary.json', 'simulation_daily.parquet',
             'validation_forecasts.parquet', 'final_forecasts.parquet', 'zero_sales_diagnostics.json']
 missing = [name for name in required if not (OUT / name).exists()]
 if missing:
     st.title('Inventory decisions')
+    if DEMO:
+        st.error('The public demo bundle is incomplete. Please try again after the deployment is repaired.')
+        st.stop()
     st.info('Build the local analysis to explore the dashboard.')
     with st.expander('Local setup', expanded=True):
         st.code('python scripts/download_data.py\npython scripts/build_data.py\npython scripts/backtest.py\npython scripts/evaluate.py\npython scripts/simulate.py', language='shell')
@@ -75,7 +79,7 @@ base = simulation['scenario_config']['scenario']
 sensitivity = simulation['scenario_config']['sensitivity']
 with st.sidebar:
     st.header('Planning context')
-    st.caption('CA_1 store · FOODS_3 department')
+    st.caption('Demo store · Synthetic products' if DEMO else 'CA_1 store · FOODS_3 department')
     leads = sorted(set(sensitivity['lead_time_days'] + [base['lead_time_days']]))
     covers = sorted(set(sensitivity['initial_stock_cover_days'] + [base['initial_stock_cover_days']]))
     lead = st.selectbox('Supplier lead time (days)', leads, index=leads.index(base['lead_time_days']), key='lead')
@@ -96,6 +100,9 @@ subtitles = {'Overview': 'Compare replenishment policies and inspect the service
              'Forecasts': 'Compare fixed forecasting candidates across historical evaluation windows.'}
 st.title(titles[active_view])
 st.write(subtitles[active_view])
+if DEMO:
+    st.info('SYNTHETIC DEMO · Products, sales, prices, and inventory outcomes are generated examples. The published M5 case study has different results.')
+    st.markdown('[Read the M5 findings and methodology](https://github.com/ds-pouya/inventory-replenishment-analytics#what-i-found)')
 if not items:
     st.warning('Select at least one product in Planning context to continue.')
     st.stop()
@@ -107,14 +114,15 @@ start, end = replay.date.min().strftime('%d %b %Y'), replay.date.max().strftime(
 if active_view in ('Overview', 'Inventory'):
     st.caption(f'{len(items)} products · Lead {lead} days · Initial cover {cover} days · Replay {start} – {end}')
 else:
-    st.caption(f'{len(items)} products · CA_1 store · FOODS_3 department')
+    context = 'Demo store · Synthetic products' if DEMO else 'CA_1 store · FOODS_3 department'
+    st.caption(f'{len(items)} products · {context}')
 page = st.radio('Explore the analysis', ['Overview', 'Inventory', 'Demand', 'Forecasts'], horizontal=True, key='page', label_visibility='collapsed')
 if page in ('Overview', 'Inventory'):
-    st.caption('SIMULATED INVENTORY · Historical sales proxy demand; stock and supplier inputs are hypothetical.')
+    st.caption('SIMULATED INVENTORY · Generated sales proxy demand; all inputs are synthetic.' if DEMO else 'SIMULATED INVENTORY · Historical sales proxy demand; stock and supplier inputs are hypothetical.')
 elif page == 'Demand':
-    st.caption('OBSERVED SALES · Fulfilled transactions do not measure unconstrained demand.')
+    st.caption('SYNTHETIC SALES · Generated units demonstrate the workflow; they are not retailer transactions.' if DEMO else 'OBSERVED SALES · Fulfilled transactions do not measure unconstrained demand.')
 else:
-    st.caption('FORECAST BACKTEST · Product filters update scores; model selection remains frozen.')
+    st.caption('SYNTHETIC FORECAST BACKTEST · Product filters update scores; model selection remains fixed.' if DEMO else 'FORECAST BACKTEST · Product filters update scores; model selection remains frozen.')
 
 
 def comparison_table():
@@ -183,16 +191,16 @@ elif page == 'Inventory':
         st.success('No unmet units in this replay selection.')
     with st.expander('Event sequence and assumptions'):
         st.write('Daily sequence: receipts → opening review and orders → demand fulfillment → closing stock. Orders placed on day t arrive on t + lead time. Lost units are not backordered; final on-order units include deliveries after the replay ends.')
-        st.write('Fixed cover orders a constant quantity every review. Order-up-to accounts for available stock and orders in transit, using calendar forecasts plus an approximate buffer. This compares policy bundles, not the isolated effect of one component.')
+        st.write('Fixed cover orders a constant quantity every review. Order-up-to accounts for available stock and orders in transit, using the selected forecasts plus an approximate buffer. This compares policy bundles, not the isolated effect of one component.')
         st.caption(simulation['checks'])
 
 elif page == 'Demand':
     view = training[training.item_id.isin(items)]
-    st.subheader('Observed demand patterns')
+    st.subheader('Synthetic sales patterns' if DEMO else 'Observed demand patterns')
     st.caption(f"Training history only · {view.date.min():%d %b %Y} – {view.date.max():%d %b %Y}. Validation and final-period sales are excluded.")
     left, right = st.columns(2)
-    left.metric('Fulfilled sales units', compact(view.units.sum()))
-    right.metric('Observed sales value (USD)', '$' + compact(view.sales_value.sum()))
+    left.metric('Generated sales units' if DEMO else 'Fulfilled sales units', compact(view.units.sum()))
+    right.metric('Generated sales value (USD)' if DEMO else 'Observed sales value (USD)', '$' + compact(view.sales_value.sum()))
     st.caption('Selling-price value is neither profit nor inventory acquisition cost.')
     weekly = view.set_index('date').resample('W').units.sum().rename('Units').reset_index()
     st.altair_chart(alt.Chart(weekly).mark_line(color='#0F766E', strokeWidth=2).encode(
@@ -221,12 +229,18 @@ elif page == 'Forecasts':
     table = scores[['Model', 'mae', 'WAPE (%)', 'bias']].rename(columns={'mae': 'MAE (units)', 'bias': 'Bias (units)'})
     st.dataframe(table.round(3), hide_index=True, width='stretch')
     st.caption(f"{len(items)} selected product{'s' if len(items) != 1 else ''}. MAE and bias are units per product-day; WAPE weights absolute errors by observed volume. Positive bias indicates overprediction.")
-    st.info('Calendar ridge was selected on full-cohort validation before the final evaluation. On the full cohort, the 28-day average performed better on the final period. Filtering products changes displayed scores, not the frozen model selection.')
+    if DEMO:
+        selected = MODEL_LABELS[simulation['selected_forecast_model']]
+        final_scores = forecast_metrics(data('final_forecasts.parquet'))
+        best = MODEL_LABELS[final_scores.sort_values(['mae', 'model']).iloc[0].model]
+        st.info(f'{selected} was selected using full-cohort synthetic validation. {best} has the lowest full-cohort final-period MAE. Product filters change displayed scores, not the selection. These results illustrate the workflow and are not M5 findings.')
+    else:
+        st.info('Calendar ridge was selected on full-cohort validation before the final evaluation. On the full cohort, the 28-day average performed better on the final period. Filtering products changes displayed scores, not the frozen model selection.')
     product = st.selectbox('Inspect a product', items, key='forecast_product')
     history = predictions[predictions.item_id == product]
     history = history.assign(Series=history.model.map(MODEL_LABELS)).rename(columns={'prediction': 'Units'})
     actual = history.drop_duplicates('day_number')[['day_number', 'actual']].rename(columns={'actual': 'Units'})
-    actual['Series'] = 'Observed sales'
+    actual['Series'] = 'Generated sales' if DEMO else 'Observed sales'
     plot = pd.concat([history[['day_number', 'Units', 'Series']], actual], ignore_index=True)
     dates = sales[['day_number', 'date']].drop_duplicates('day_number')
     plot = plot.merge(dates, on='day_number', validate='many_to_one')
@@ -235,7 +249,10 @@ elif page == 'Forecasts':
 
 st.divider()
 with st.expander('Data provenance and metric definitions'):
-    st.write('Source: M5 retail sales, University of Nicosia’s Zenodo mirror. This case study covers active products in one store and department; it is not representative of all retail inventory.')
+    if DEMO:
+        st.write('Source: independent synthetic generator, seed 20261019. This demo contains 24 invented products, Poisson sales, weekly and annual patterns, promotions, and explicit zero-sales periods. No M5 rows or fitted M5 parameters are included. Synthetic outcomes do not establish retailer performance.')
+    else:
+        st.write('Source: M5 retail sales, University of Nicosia’s Zenodo mirror. This case study covers active products in one store and department; it is not representative of all retail inventory.')
     profile = json.loads((OUT / 'profile.json').read_text())
     st.caption(profile['checks'])
     st.write('Unit fill rate = fulfilled units / requested proxy units. Average closing stock = daily cohort closing-stock totals averaged over the replay. Undefined fill rates and percentage changes are shown as N/A. Final on-order stock is reported separately.')

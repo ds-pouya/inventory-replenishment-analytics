@@ -23,6 +23,11 @@
   - [x] Author PBIP/PBIR/TMSL and parameterized RDL sources; check schemas and local extracts.
   - [ ] Validate native model refresh, DAX, report interactions, pagination, and exports.
 
+- [ ] M8: launch a distributable public dashboard demo.
+  - [x] Generate and label independent synthetic data; test clean-copy startup and interactions.
+  - [x] Add deployment settings, repository CI, and a launch draft.
+  - [ ] Deploy publicly, verify signed-out access, and publish the confirmed live link.
+
 Release criteria include a reproducible setup, code licensing, source attribution,
 completed validation, and documented limitations. Raw data and credentials remain
 outside version control.

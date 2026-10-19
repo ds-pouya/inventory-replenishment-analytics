@@ -1,0 +1,63 @@
+{
+  "inputs": [
+    {
+      "filename": "sales.csv",
+      "bytes": 143156,
+      "sha256": "5bf9fed48eb98bbdaa7731dbde929ff415538626af187d4c451ed6404ad5e8d8"
+    },
+    {
+      "filename": "calendar.csv",
+      "bytes": 57875,
+      "sha256": "52f5db9a5b685e7d4d61a91f4ca54e14221cabbcc917e0702d0bdf4e02074a5e"
+    },
+    {
+      "filename": "prices.csv",
+      "bytes": 192307,
+      "sha256": "c8eb3282f044c2bc75a5036e8ca31379ec9e022f0af25c6a5e7968d7d7c7ad9b"
+    }
+  ],
+  "source_rows": {
+    "sales": 24,
+    "calendar": 1969,
+    "prices": 6768
+  },
+  "subset": {
+    "store_id": "DEMO_STORE",
+    "dept_id": "DEMO_PRODUCTS",
+    "max_items": 24,
+    "selection_end_day": 1801,
+    "selection_rule": "all generated products"
+  },
+  "selected_items": [
+    "DEMO_001",
+    "DEMO_002",
+    "DEMO_003",
+    "DEMO_004",
+    "DEMO_005",
+    "DEMO_006",
+    "DEMO_007",
+    "DEMO_008",
+    "DEMO_009",
+    "DEMO_010",
+    "DEMO_011",
+    "DEMO_012",
+    "DEMO_013",
+    "DEMO_014",
+    "DEMO_015",
+    "DEMO_016",
+    "DEMO_017",
+    "DEMO_018",
+    "DEMO_019",
+    "DEMO_020",
+    "DEMO_021",
+    "DEMO_022",
+    "DEMO_023",
+    "DEMO_024"
+  ],
+  "daily_rows": 46584,
+  "total_units": 890637.0,
+  "unpriced_zero_sales_rows": 0,
+  "date_min": "2021-01-04",
+  "date_max": "2026-04-28",
+  "checks": "passed: keys, sales ranges, calendar matches, join cardinality, units and positive-sales price coverage"
+}

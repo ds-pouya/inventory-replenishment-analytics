@@ -87,3 +87,17 @@ report rendering, RDL connections, pagination, and exports remain unverified.
 M7 remains open until those checks can run in Power BI Desktop/Report Builder or
 an appropriate service environment. The Python app remains the demonstrated
 application; public hosting is a separate deployment step.
+
+## Public demo package
+
+A separate public entry point, `app/demo_app.py`, reads a checked-in synthetic
+bundle for 24 invented products. It has no runtime M5 data dependency, and every
+view displays its synthetic provenance. The generator uses the existing pipeline
+in a disposable directory, leaving M5 outputs and selection fingerprints intact.
+
+All 38 local checks pass, including a clean-copy demo test without M5 data, bundle
+hashes, navigation, filters, forecasts, and inventory accounting. A read-only
+GitHub Actions workflow runs project checks on clean Linux checkouts.
+The [deployment guide](DEPLOYMENT.md) records the repository, entry point, Python
+version, and public smoke-test procedure. Hosting and a verified live URL remain
+pending; M8 is not yet complete.

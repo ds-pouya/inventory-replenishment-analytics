@@ -4,3 +4,6 @@ Run download_data.py, build_data.py, backtest.py, evaluate.py, then simulate.py.
 results, and regenerates PBIP/PBIR/TMSL and RDL sources. `validate_native_reports.py`
 checks public JSON schemas and RDL XSD; it does not execute a Power BI runtime.
 See `reports/VALIDATION.md` and the native report READMEs.
+
+`build_demo.py` regenerates the independent synthetic dashboard bundle under
+`data/demo/`, reusing the analysis pipeline in a disposable directory.

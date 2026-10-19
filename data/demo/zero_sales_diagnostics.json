@@ -1,0 +1,194 @@
+[
+  {
+    "item_id": "DEMO_001",
+    "zero_sales_share": 0.3192670738478623,
+    "longest_zero_run_days": 41,
+    "zero_runs_at_least_28_days": 1,
+    "leading_zero_days": 2,
+    "trailing_zero_days": 1
+  },
+  {
+    "item_id": "DEMO_002",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_003",
+    "zero_sales_share": 0.002220988339811216,
+    "longest_zero_run_days": 1,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_004",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_005",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_006",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_007",
+    "zero_sales_share": 0.31315935591338145,
+    "longest_zero_run_days": 6,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 1
+  },
+  {
+    "item_id": "DEMO_008",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_009",
+    "zero_sales_share": 0.02220988339811216,
+    "longest_zero_run_days": 40,
+    "zero_runs_at_least_28_days": 1,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_010",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_011",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_012",
+    "zero_sales_share": 0.006662965019433648,
+    "longest_zero_run_days": 1,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_013",
+    "zero_sales_share": 0.303164908384231,
+    "longest_zero_run_days": 5,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 1,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_014",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_015",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_016",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_017",
+    "zero_sales_share": 0.02220988339811216,
+    "longest_zero_run_days": 40,
+    "zero_runs_at_least_28_days": 1,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_018",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_019",
+    "zero_sales_share": 0.305941143808995,
+    "longest_zero_run_days": 8,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 1
+  },
+  {
+    "item_id": "DEMO_020",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_021",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_022",
+    "zero_sales_share": 0.003331482509716824,
+    "longest_zero_run_days": 2,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_023",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  },
+  {
+    "item_id": "DEMO_024",
+    "zero_sales_share": 0.0,
+    "longest_zero_run_days": 0,
+    "zero_runs_at_least_28_days": 0,
+    "leading_zero_days": 0,
+    "trailing_zero_days": 0
+  }
+]

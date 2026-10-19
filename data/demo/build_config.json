@@ -1,0 +1,23 @@
+{
+  "data": {
+    "source": "independent-synthetic-example",
+    "raw_directory": "data/raw/synthetic",
+    "sales_file": "sales.csv",
+    "calendar_file": "calendar.csv",
+    "prices_file": "prices.csv"
+  },
+  "subset": {
+    "store_id": "DEMO_STORE",
+    "dept_id": "DEMO_PRODUCTS",
+    "max_items": 24,
+    "selection_end_day": 1801,
+    "selection_rule": "all generated products"
+  },
+  "evaluation": {
+    "initial_train_end_day": 1801,
+    "validation_windows": 4,
+    "horizon_days": 28,
+    "final_holdout_start_day": 1914,
+    "final_holdout_end_day": 1941
+  }
+}

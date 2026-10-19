@@ -59,8 +59,17 @@ Four views connect the decision to its evidence:
 
 ![Nine inventory scenarios comparing simulated service and closing stock](assets/screenshots/inventory-scenarios.jpg)
 
-The app currently runs locally. The screenshots and results are available here
-without installing it. The [dashboard gallery](docs/DASHBOARD_GALLERY.md) contains
+A distributable **synthetic demo** runs from a clean checkout with no M5 download:
+
+```sh
+.venv/bin/python -m streamlit run app/demo_app.py
+```
+
+Its 24 invented products demonstrate the same dashboard with different results.
+Every view identifies the synthetic data; the findings and screenshots above
+remain the M5 analysis. Public hosting is pending; the
+[deployment guide](docs/DEPLOYMENT.md) provides the ready-to-use settings.
+The screenshots and results are available here without installing the app. The [dashboard gallery](docs/DASHBOARD_GALLERY.md) contains
 the demand and forecast views; the [dashboard guide](docs/DASHBOARD.md) explains filters.
 
 ## Data and engineering
@@ -86,9 +95,11 @@ the mart is written. Forecast selection is recorded before final scoring, with
 input/code fingerprints. The simulation checks daily stock and demand balance
 and cumulative stock/pipeline conservation across **25,200 ledger rows**.
 
-The local suite has **31 passing checks**: 28 unit checks and three dashboard
-integration checks. Raw files, generated marts, and daily replay records are
-excluded from Git; published material contains aggregate results and captures.
+The local suite has **38 passing checks**, including clean-copy synthetic-demo
+integration, bundle integrity, and native-report data contracts. GitHub Actions
+runs checks on clean Linux checkouts. Raw M5 files, generated M5 marts, and daily
+M5 replay records are excluded from Git. The independent synthetic example under
+`data/demo/` is distributable and versioned with its hashes.
 
 ## Run locally
 
@@ -107,7 +118,8 @@ python3 -m venv .venv
 ```
 
 Run checks with `.venv/bin/python -m unittest discover -s tests -v`.
-Dashboard integration checks skip until the local analysis is built. A separate
+The three M5 dashboard integration checks skip until the local analysis is built;
+public synthetic-demo checks always run. A separate
 rebuild from the verified raw inputs reproduced the frozen final evaluation and
 all 18 scenario-policy summaries in the tested environment.
 [Setup and output details](docs/SETUP.md).
@@ -135,3 +147,6 @@ Native [Power BI project](reports/powerbi/README.md) and
 extract reconciliation checks pass; native refresh, rendering, and exports remain
 unverified. See the [validation record](reports/VALIDATION.md) and
 [milestones](docs/MILESTONES.md).
+
+Code and the independently generated synthetic example are available under the
+[MIT license](LICENSE). M5 input data remains subject to its own source terms.

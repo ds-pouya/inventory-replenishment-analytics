@@ -1,0 +1,43 @@
+{
+  "kind": "synthetic",
+  "seed": 20261019,
+  "products": 24,
+  "description": "Independently generated example; no M5 records or fitted M5 parameters. Metrics do not represent the M5 case study.",
+  "generator": "src/inventory_analytics/demo.py",
+  "generator_sha256": "8d6a35c15add72c1e6d8df3a12092d9c4c349c3b16f8a70fec963ad2ede6cc09",
+  "numpy_version": "2.5.4",
+  "files": {
+    "daily_sales.parquet": {
+      "sha256": "f3de45677da1bdace36ffe2b79975d0e9b1df069b076c13dfc64d9d693f5404e",
+      "bytes": 340796
+    },
+    "profile.json": {
+      "sha256": "0f5c83a381bd4be0aa88f75424e2a440365ec018034575dbcc519ab7b3104f84",
+      "bytes": 1404
+    },
+    "build_config.json": {
+      "sha256": "afa078247be9fda9650c6d921e2613134020bba3681a19f2a63aefa8797b1e5e",
+      "bytes": 571
+    },
+    "simulation_summary.json": {
+      "sha256": "944652e35d466fff36f0327829fdc64f7b42cf31ba37f629fd2f220403e32b42",
+      "bytes": 9039
+    },
+    "simulation_daily.parquet": {
+      "sha256": "3d49a204167e3e41ad8e9262e324d667f97c0ad739995b5eff9964be0baab5dd",
+      "bytes": 75937
+    },
+    "validation_forecasts.parquet": {
+      "sha256": "cf09669dcc0c9e1d687369d11425186b1f76db89e0dee3dae46769df3c094a2b",
+      "bytes": 75738
+    },
+    "final_forecasts.parquet": {
+      "sha256": "9b050bfdfc2ad5a7bf8d072b904e4dbfd2093ceb25a0e998b229de083ad2c97c",
+      "bytes": 23251
+    },
+    "zero_sales_diagnostics.json": {
+      "sha256": "95468506f7fa98230c450f22cfc023aeb6716d848e1e36bd16681225fe65d7e2",
+      "bytes": 4707
+    }
+  }
+}

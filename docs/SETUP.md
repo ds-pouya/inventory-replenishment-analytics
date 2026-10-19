@@ -83,3 +83,10 @@ No Power BI runtime is installed by these commands. Follow the
 [Power BI](../reports/powerbi/README.md) and [RDL](../reports/paginated/README.md)
 acceptance procedures before claiming native runtime validation. The builder
 regenerates report definitions; preserve any manual report edits first.
+
+## Synthetic demo without source acquisition
+
+Run `.venv/bin/python -m streamlit run app/demo_app.py` after installing the locked
+dependencies. This always uses the committed `data/demo/` bundle and never falls
+back to local M5 data. Regeneration is optional: `python scripts/build_demo.py`.
+See [deployment and validation](DEPLOYMENT.md).
