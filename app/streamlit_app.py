@@ -196,7 +196,7 @@ elif page == 'Demand':
     st.caption('Selling-price value is neither profit nor inventory acquisition cost.')
     weekly = view.set_index('date').resample('W').units.sum().rename('Units').reset_index()
     st.altair_chart(alt.Chart(weekly).mark_line(color='#0F766E', strokeWidth=2).encode(
-        x=alt.X('date:T', title=None), y=alt.Y('Units:Q', title='Weekly fulfilled units'),
+        x=alt.X('date:T', title=None, axis=alt.Axis(format='%b %Y', tickCount=6)), y=alt.Y('Units:Q', title='Weekly fulfilled units'),
         tooltip=[alt.Tooltip('date:T'), alt.Tooltip('Units:Q', format=',.0f')]).properties(height=270), use_container_width=True)
     products = view.groupby('item_id').agg(Units=('units', 'sum'), Sales_value=('sales_value', 'sum'), Zero_sales_share=('units', lambda x: (x == 0).mean())).sort_values('Units', ascending=False)
     products['Zero sales (%)'] = products.pop('Zero_sales_share') * 100

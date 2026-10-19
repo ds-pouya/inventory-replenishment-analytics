@@ -1,4 +1,4 @@
-# Implementation status — 2026-10-16
+# Implementation status — 2026-10-19
 
 ## Completed and verified locally
 
@@ -58,8 +58,23 @@ The light theme and chart labels have been reviewed across all four desktop view
 All 31 local checks pass: 28 unit checks and three dashboard integration checks.
 [Dashboard guide](DASHBOARD.md) documents navigation, filters, and interpretation.
 
+## Publication package completed
+
+The repository now leads with the business question, inventory tradeoff, forecast
+comparison, and actual dashboard captures. Four viewport screenshots have been
+visually checked; their context, dimensions, and hashes are recorded under
+`assets/screenshots/`. The demand trend now includes years on its date axis.
+
+The [gallery](DASHBOARD_GALLERY.md) provides static previews without installation.
+The [technical walkthrough](TECHNICAL_WALKTHROUGH.md) traces source grain, join
+validation, chronological selection, inventory accounting, and the dashboard demo.
+The materials retain the difference between observed sales and simulated inventory.
+All 31 local checks pass. A separate temporary rebuild from the verified raw inputs
+passed frozen forecast evaluation and reproduced all 18 scenario-policy summaries.
+
 ## Next milestone
 
-Prepare the publication package: repository screenshots, a concise case-study
-narrative, and a technical walkthrough. Public app deployment and native Power BI /
-paginated reports remain separate work.
+Add native Power BI project/report/model source and a paginated RDL exception
+report, with refresh, rendering, and export validation in the appropriate runtime.
+No native report is currently validated. The Python app remains a local application;
+public hosting is separate from this completed repository publication package.

@@ -1,0 +1,47 @@
+{
+  "captured_on": "2026-10-19",
+  "source": "app/streamlit_app.py",
+  "source_sha256": "699948d2aa4f592df82a841a04b4086bde96fa67a7323b3ac82d5b6dfb5fddfc",
+  "method": "Unaltered browser viewport screenshots; scroll position differs by view. Charts and values are not redrawn.",
+  "context": {
+    "products": 50,
+    "store": "CA_1",
+    "department": "FOODS_3",
+    "lead_days": 7,
+    "review_days": 7,
+    "initial_cover_days": 14,
+    "planning_fill_threshold": 0.95,
+    "forecast_view": "Final holdout",
+    "demand_view": "Training days 1\u20131801"
+  },
+  "images": [
+    {
+      "file": "demand-patterns.jpg",
+      "width": 866,
+      "height": 954,
+      "bytes": 68051,
+      "sha256": "0830b2d741f6f7488941522d4d8e926882e1dbb1672cc5d98a49b7b955bdd26e"
+    },
+    {
+      "file": "forecast-evaluation.jpg",
+      "width": 866,
+      "height": 954,
+      "bytes": 72529,
+      "sha256": "4939a324e84414466cfbb76b83a66b04f585769bfc4b090ab212c7432c28700a"
+    },
+    {
+      "file": "inventory-scenarios.jpg",
+      "width": 866,
+      "height": 954,
+      "bytes": 64304,
+      "sha256": "19a8822f9294f3a49e2aec503b9a8f534bebe3fe2d7f121077eb4720cbc90e4b"
+    },
+    {
+      "file": "overview.jpg",
+      "width": 866,
+      "height": 954,
+      "bytes": 73772,
+      "sha256": "697ed88a55e8c073e2b79b3b4308633beed2690f8ecdd6466505e29d17b5cb9c"
+    }
+  ]
+}

@@ -65,5 +65,5 @@ checks. The integration checks skip when the local analysis has not been built.
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-The application reads local generated outputs. Public deployment and publication
-screenshots are separate release tasks.
+The application reads local generated outputs. Publication screenshots are available
+in the [gallery](DASHBOARD_GALLERY.md); public deployment remains separate.

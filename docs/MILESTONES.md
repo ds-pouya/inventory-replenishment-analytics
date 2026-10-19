@@ -15,7 +15,10 @@
   - [x] Integrate simulation scenario comparison and product filtering.
   - [x] Finish decision summaries, presentation layout, and desktop visual review.
   - [x] Verify product-filter consistency, service-threshold logic, and aggregate exports.
-- [ ] M6: publish findings, screenshots, and a technical walkthrough.
+- [x] M6: publish findings, screenshots, and a technical walkthrough.
+  - [x] Lead the repository README with the business question and measured results.
+  - [x] Capture all four dashboard views and record their context and file hashes.
+  - [x] Document the full analytical sequence and an end-to-end demonstration.
 - [ ] M7: add Power BI/PBIR/model and RDL only with target-runtime validation.
 
 Release criteria include a reproducible setup, code licensing, source attribution,
